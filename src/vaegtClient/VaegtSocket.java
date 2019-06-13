@@ -15,7 +15,7 @@ public class VaegtSocket {
         try {
             String host = "127.0.0.1";
             int port = 8000;
-            socket = new java.net.Socket(host, port);
+            socket = new Socket(host, port);
 
             outputStream = socket.getOutputStream();
             inputStream = socket.getInputStream();
