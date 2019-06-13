@@ -1,4 +1,4 @@
-/*package rest;
+package rest;
 
 import dao.*;
 import dto.*;
@@ -98,4 +98,3 @@ public class Users {
 
     }
 }
-*/
