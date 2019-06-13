@@ -13,10 +13,6 @@ public class VaegtController {
         this.socket = socket;
     }
 
-    public void setBrugerLogic(BrugerLogic userLogic) {
-        this.userLogic = userLogic;
-    }
-
     public void start() {
         String material;
         double netWeight;
