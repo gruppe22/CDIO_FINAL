@@ -1,6 +1,8 @@
 package vaegtClient;
 
 import dto.BrugerDTO;
+import dto.ProduktBatchDTO;
+import dto.ReceptDTO;
 import logic.BrugerLogic;
 import logic.VaegtLogic;
 
@@ -9,14 +11,23 @@ public class VaegtController {
     private VaegtLogic vaegtLogic;
     private BrugerLogic userLogic;
 
+    public VaegtController() {
+        vaegtLogic = new VaegtLogic();
+        userLogic = new BrugerLogic();
+    }
+
     public void setSocket(VaegtSocket socket) {
         this.socket = socket;
     }
 
     public void start() {
-        String material;
+        //String material;
         double netWeight;
         double bruttoWeight;
+
+        /*
+         * Get operator from weight
+         */
         String input = socket.sendAndAwaitReturn("Indtast op. nummer");
         String operatorNumber = SubStringGenerator(input, "\"", "\"", 1);
         BrugerDTO user = null;
@@ -27,12 +38,25 @@ public class VaegtController {
             e.printStackTrace();
         }
 
+        /*
+         * Approve operator
+         */
         input = socket.sendAndAwaitReturn(user.getOprNavn() + " - Er dette korrekt (1:Y, 2:N)");
 
         if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
-            input = socket.sendAndAwaitReturn("Indtast materialenummer: ");
-            int batchid =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
-            material = getMaterial(batchid);
+
+            /*
+             * Get product-batch number from weight
+             */
+            input = socket.sendAndAwaitReturn("Indtast produkt-batch-nummer: ");
+            int batchId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
+            ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
+            ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
+            socket.sendAndAwaitReturn("Recept: " + recept.getReceptNavn());
+
+            /*
+             * Resten mangler.. Pkt. 7 og frem
+             */
             socket.sendAndAwaitReturn("Vaegten skal vaere ubelastet.");
             socket.tareWeight();
             socket.sendAndAwaitReturn("Placer venligst tara på vaegten.");
@@ -46,7 +70,7 @@ public class VaegtController {
             input = socket.sendAndAwaitReturn("OK (1) eller Kasseret (2) ?");
 
             if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
-                saveBatch(taraweight, netWeight, bruttoWeight, batchid, user);
+                // save
             }
             else {
                 start();
@@ -55,11 +79,6 @@ public class VaegtController {
         else {
             start();
         }
-    }
-
-    public String getMaterial(int batchNumber) {
-        return "";
-        //return vaegtLogic.getMaterial(batchNumber).getMaterial();
     }
 
     public double getNetWeight(String netWeightResult) {
@@ -78,9 +97,5 @@ public class VaegtController {
 
         String returnString = source.substring(opening, closing);
         return returnString;
-    }
-
-    public void saveBatch(double tareWeight, double netWeight, double bruttoWeight, int batchId, BrugerDTO user) {
-        //vaegtLogic.saveBatch(tareWeight, netWeight, bruttoWeight, batchId, user);
     }
 }
