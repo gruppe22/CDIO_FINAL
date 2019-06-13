@@ -1,4 +1,4 @@
-package rest;
+/*package rest;
 
 import dao.*;
 import dto.*;
@@ -15,15 +15,15 @@ public class Users {
     BrugerDAO dao = new BrugerDAO();
 
     @GET
-    public List<IUserDTO> getUserList() throws IBrugerDAO.DALException {
-        List<IUserDTO> list = dao.getUserList();
+    public List<BrugerDTO> getUserList() throws IBrugerDAO.DALException {
+        List<BrugerDTO> list = dao.getUserList();
         return list;
     }
 
     @GET
     @Path("{id}")
-    public IUserDTO getUser(@PathParam("id") int id) throws IBrugerDAO.DALException {
-        IUserDTO user = dao.getUser(id);
+    public BrugerDTO getUser(@PathParam("id") int id) throws IBrugerDAO.DALException {
+        BrugerDTO user = dao.getUser(id);
         return user;
     }
 
@@ -41,7 +41,7 @@ public class Users {
                     .entity("Udfyld alle felter")
                     .build();
 
-        IUserDTO u = dao.getUser(json.getInt("userId"));
+        BrugerDTO u = dao.getUser(json.getInt("userId"));
 
         if (u.getUserId() == json.getInt("userId"))
             return Response.status(400)
@@ -49,7 +49,7 @@ public class Users {
                     .entity("Bruger-ID findes allerede - prøv et andet")
                     .build();
 
-        UserDTO user = new UserDTO(json.getInt("userId"), json.getString("userName"), json.getString("ini"), json.getInt("cprNumber"));
+        BrugerDTO user = new BrugerDTO(json.getInt("userId"), json.getString("userName"), json.getString("ini"), json.getInt("cprNumber"));
         user.setRole(json.getString("role"));
         user.setPassword();
 
@@ -74,7 +74,7 @@ public class Users {
                     .entity("Udfyld alle felter")
                     .build();
 
-        IUserDTO u = dao.getUser(json.getInt("userId"));
+        BrugerDTO u = dao.getUser(json.getInt("userId"));
 
         if (u.getUserId() != json.getInt("userId"))
             return Response.status(400)
@@ -82,7 +82,7 @@ public class Users {
                     .entity("Brugeren findes ikke - opret brugeren først")
                     .build();
 
-        UserDTO user = new UserDTO(json.getInt("userId"), json.getString("userName"), json.getString("ini"), json.getInt("cprNumber"));
+        BrugerDTO user = new BrugerDTO(json.getInt("userId"), json.getString("userName"), json.getString("ini"), json.getInt("cprNumber"));
         user.setRole(json.getString("role"));
 
         dao.updateUser(user);
@@ -98,3 +98,4 @@ public class Users {
 
     }
 }
+*/
