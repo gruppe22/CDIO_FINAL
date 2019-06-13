@@ -1,0 +1,14 @@
+#log-in-wrapper {
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    width: fit-content;
+}
+
+#brugerlogininput {
+    margin-top: 20px;
+}
+
+#brugerlogin {
+    margin-top:50px;
+}

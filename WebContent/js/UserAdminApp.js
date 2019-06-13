@@ -5,6 +5,10 @@
         function($routeProvider) {
             $routeProvider
                 .when("/", {
+                    templateUrl : "LogInd.html",
+                    controller: "LogIndController"
+                })
+                .when("/ListUsers", {
                     templateUrl : "ListUsers.html",
                     controller : "ListUserController"
                 })
@@ -17,6 +21,29 @@
                     controller : "CreateUserController"
                 });
         });
+
+    var LogIndController = function($scope) {
+        var settings = {
+            "url": "http://localhost:8080/rest/users/login/" + $('#brugerlogininput').val(),
+            "method": "GET",
+            "timeout": 0,
+            "success": function(data) {
+                if (data.rolle == "administrator") {
+                    $('#ajaxchangediv').html('<a class="nav-link" href="#/ListUsers> Id findes. Klik her.</a>')
+                }
+            },
+            "failure" : function() {
+                $('#ajaxchangediv').html('<p color = "red">BrugerId kunne ikke findes.</p>')
+            }
+        };
+
+        $scope.submitLogIn = function() {
+            $.ajax(settings);
+        }
+    };
+
+    LogIndController.$inject = ['$scope'];
+    userAdminApp.controller('LogIndController', LogIndController);
 
     var ListUserController = function($scope) {
         var settings = {
