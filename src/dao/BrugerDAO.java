@@ -7,7 +7,6 @@ import java.util.List;
 
 public class BrugerDAO implements IBrugerDAO {
 
-
     private Connection createConnection() throws DALException {
         try {
             return DriverManager.getConnection("jdbc:mysql://anfran.dk/cdio?"

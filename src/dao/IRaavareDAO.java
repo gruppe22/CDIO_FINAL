@@ -9,6 +9,7 @@ public interface IRaavareDAO {
     List<RaavareDTO> getRaavareList() throws DALException;
     void createRaavare(RaavareDTO raavare) throws DALException;
     void updateRaavare(RaavareDTO raavare) throws DALException;
+
     class DALException extends Exception {
         //Til Java serialisering...
         private static final long serialVersionUID = 7355418246336739229L;
