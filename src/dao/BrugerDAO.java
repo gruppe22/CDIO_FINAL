@@ -10,7 +10,7 @@ public class BrugerDAO implements IBrugerDAO {
 
     private Connection createConnection() throws DALException {
         try {
-            return DriverManager.getConnection("jdbc:mysql://anfran.dk"
+            return DriverManager.getConnection("jdbc:mysql://anfran.dk/cdio?"
                     + "user=cdio&password=chokoladekage22");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -31,7 +31,7 @@ public class BrugerDAO implements IBrugerDAO {
     public void createBruger(BrugerDTO opr) throws DALException {
         Connection c = createConnection();
         try {
-            PreparedStatement ps = c.prepareStatement("insert into Bruger values (?,?,?,?,?,?)");
+            PreparedStatement ps = c.prepareStatement("insert into Bruger values (?,?,?,?,?)");
             ps.setInt(1, opr.getOprId());
             ps.setString(2, opr.getOprNavn());
             ps.setString(3, opr.getIni());
