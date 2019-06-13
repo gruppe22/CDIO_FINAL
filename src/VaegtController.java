@@ -61,11 +61,11 @@ public class VaegtController implements IVaegtController{
                 e.printStackTrace();
             }
 
-            input = vaegt.sendAndAwaitReturn(user.getUserName() + " - Er dette korrekt (1:Y, 2:N)");
+            input = vaegt.sendAndAwaitReturn(bruger.getUserName() + " - Er dette korrekt (1:Y, 2:N)");
             if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
                 input = vaegt.sendAndAwaitReturn("Indtast materialenummer: ");
-                int batchid =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
-                material = getMaterial(batchid);
+                int raavareId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
+                raavare = getRaavare(raavareId);
                 vaegt.sendAndAwaitReturn("Vaegten skal vaere ubelastet.");
                 vaegt.tareWeight();
                 vaegt.sendAndAwaitReturn("Placer venligst tara på vaegten.");
@@ -78,7 +78,7 @@ public class VaegtController implements IVaegtController{
                 bruttoweight = getBruttoWeight(netweight, vaegt.readWeight());
                 input = vaegt.sendAndAwaitReturn("OK (1) eller Kasseret (2) ?");
                 if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
-                    saveBatch(taraweight, netweight, bruttoweight, batchid, bruger);
+                    saveBatch(taraweight, netweight, bruttoweight, raavareId, bruger);
                 }
                 else {
                     start();
@@ -91,8 +91,8 @@ public class VaegtController implements IVaegtController{
         }
 
         @Override
-        public String getMaterial(int batchnumber) {
-            return vaegtLogik.getRaavare(batchnumber).getMaterial();
+        public String getRaavare(int raavareId) {
+            return vaegtLogik.getRaavare(raavareId).getRaavare();
         }
 
         @Override

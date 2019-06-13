@@ -13,7 +13,7 @@ public interface IVaegtController {
     public void getOperatorID();
     public void getrbId();
     public void start() throws IRaavareBatchDAO.DALException;
-    public String getMaterial(int batchnumber);
+    public String getRaavare(int rbId);
     public double getNetWeight(String netweightresult);
     public double getBruttoWeight(double net, String bruttoweightresult);
 
