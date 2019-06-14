@@ -3,7 +3,6 @@ package dao;
 import dto.BrugerDTO;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BrugerDAO implements IBrugerDAO {
@@ -20,14 +19,12 @@ public class BrugerDAO implements IBrugerDAO {
     @Override
     public BrugerDTO getBruger(int oprId) throws Exception {
         BrugerDTO user = new BrugerDTO();
-        PreparedStatement ps = createConnection().prepareStatement("SELECT * FROM Bruger WHERE brugerId =?");
-        ps.setInt(1,oprId);
-
+        String sql = "SELECT * FROM Bruger WHERE brugerId =";
 
         try {
-
-
-            ResultSet rs = ps.executeQuery();
+            Connection c = createConnection();
+            Statement statement = c.createStatement();
+            ResultSet rs = statement.executeQuery(sql+oprId);
 
             while(rs.next()) {
                 user.setIni(rs.getString("ini"));
@@ -35,7 +32,7 @@ public class BrugerDAO implements IBrugerDAO {
                 user.setOprNavn(rs.getString("brugerNavn"));
                 user.setCpr(rs.getString("cpr"));
                 user.setRolle(rs.getString("rolle"));
-            } rs.close();
+            } rs.close(); c.close();
              } catch (SQLIntegrityConstraintViolationException ex){
             throw new DALException("Fejl ved oprettelse af bruger" +" "+ ex.getMessage());
             }catch (SQLException ex){
@@ -46,40 +43,8 @@ public class BrugerDAO implements IBrugerDAO {
 
     @Override
     public List<BrugerDTO> getBrugerList() throws DALException {
-        try (Connection connection = createConnection()) {
-            List<BrugerDTO> userList = new ArrayList<>();
-
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM `Bruger`");
-
-            while (resultSet.next()) {
-                // Setting up a New User DTO
-                BrugerDTO bruger = new BrugerDTO();
-
-                // All parameters
-                bruger.setOprId(resultSet.getInt("brugerId"));
-                bruger.setOprNavn(resultSet.getString("brugerNavn"));
-                bruger.setIni(resultSet.getString("ini"));
-                bruger.setCpr(resultSet.getString("cpr"));
-                bruger.setRolle(resultSet.getString("rolle"));
-
-
-
-                // Add user to list
-                userList.add(bruger);
-            }
-
-            return userList;
-
-        } catch (SQLException ex) {
-            throw new DALException(ex.getMessage());
-        }
+        return null;
     }
-
-
-
-
-
 
     @Override
     public void createBruger(BrugerDTO opr) throws DALException {
@@ -104,34 +69,6 @@ public class BrugerDAO implements IBrugerDAO {
 
     @Override
     public void updateBruger(BrugerDTO opr) throws DALException {
-        try (Connection connection = createConnection()) {
 
-            PreparedStatement statement = connection.prepareStatement("UPDATE `Bruger` SET `brugerId`= ?,`brugerNavn`= ?,`ini` = ?, `cpr` =? , `rolle` =? WHERE `brugerId` = ?;");
-            statement.setInt(1, opr.getOprId());
-            statement.setString(2, opr.getOprNavn());
-            statement.setString(3, opr.getIni());
-            statement.setString(4,opr.getCpr());
-            statement.setString(5, opr.getRolle());
-            statement.setInt(6,opr.getOprId());
-            statement.executeUpdate();
-
-
-        } catch (SQLException e) {
-            throw new DALException(e.getMessage());
-        }
-    }
-
-
-    @Override
-    public void deleteBruger(BrugerDTO opr) throws DALException {
-        try (Connection connection = createConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM `Bruger` WHERE `brugerId` = ?");
-            statement.setInt(1, opr.getOprId());
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DALException(e.getMessage());
-        }
     }
 }
