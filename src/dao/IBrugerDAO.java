@@ -9,6 +9,7 @@ public interface IBrugerDAO {
     List<BrugerDTO> getBrugerList() throws DALException;
     void createBruger(BrugerDTO opr) throws DALException;
     void updateBruger(BrugerDTO opr) throws DALException;
+    void deleteBruger(BrugerDTO opr) throws DALException;
 
     class DALException extends Exception {
         //Til Java serialisering...
