@@ -23,7 +23,12 @@ public class Bruger {
     @GET
     @Path("{id}")
     public BrugerDTO getUser(@PathParam("id") int id) throws IBrugerDAO.DALException {
-        BrugerDTO user = dao.getBruger(id);
+        BrugerDTO user = null;
+        try {
+            user = dao.getBruger(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return user;
     }
 

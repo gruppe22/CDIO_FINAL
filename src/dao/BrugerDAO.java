@@ -17,8 +17,28 @@ public class BrugerDAO implements IBrugerDAO {
         }
     }
     @Override
-    public BrugerDTO getBruger(int oprId) throws DALException {
-        return null;
+    public BrugerDTO getBruger(int oprId) throws Exception {
+        BrugerDTO user = new BrugerDTO();
+        String sql = "SELECT * FROM Bruger WHERE brugerId =";
+
+        try {
+            Connection c = createConnection();
+            Statement statement = c.createStatement();
+            ResultSet rs = statement.executeQuery(sql+oprId);
+
+            while(rs.next()) {
+                user.setIni(rs.getString("ini"));
+                user.setOprId(rs.getInt("brugerId"));
+                user.setOprNavn(rs.getString("brugerNavn"));
+                user.setCpr(rs.getString("cpr"));
+                user.setRolle(rs.getString("rolle"));
+            } rs.close(); c.close();
+             } catch (SQLIntegrityConstraintViolationException ex){
+            throw new DALException("Fejl ved oprettelse af bruger" +" "+ ex.getMessage());
+            }catch (SQLException ex){
+            throw new DALException(ex.getMessage());
+            }
+            return user;
     }
 
     @Override
@@ -40,7 +60,7 @@ public class BrugerDAO implements IBrugerDAO {
             c.close();
 
         } catch (SQLIntegrityConstraintViolationException ex){
-            throw new DALException("Fejl ved oprettelse af bruger");
+            throw new DALException("Fejl ved oprettelse af bruger:" +" "+ ex.getMessage());
         }catch (SQLException ex){
             throw new DALException(ex.getMessage());
         }

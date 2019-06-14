@@ -35,8 +35,8 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
             ps.setInt(1, pb.getPbId());
             ps.setInt(2, pb.getReceptId());
             ps.setInt(3, pb.getStatus());
-            ps.setInt(4, pb.getBrugerId());
-            ps.setInt(5, pb.getRbId);
+            ps.setInt(4, pb.getReceptId());
+            ps.setInt(5, pb.getStatus());
             ps.execute();
             c.close();
 
