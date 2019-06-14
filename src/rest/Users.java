@@ -2,6 +2,7 @@ package rest;
 
 import dao.*;
 import dto.*;
+import logic.BrugerLogic;
 import org.json.JSONObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -9,32 +10,35 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("users")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public class Bruger {
-    BrugerDAO dao = new BrugerDAO();
+public class Users {
+    BrugerLogic userLogic;
 
-    @GET
-    public List<BrugerDTO> getUserList() throws IBrugerDAO.DALException {
-        List<BrugerDTO> list = dao.getBrugerList();
-        return list;
-    }
-
-    @GET
-    @Path("{id}")
-    public BrugerDTO getUser(@PathParam("id") int id) throws IBrugerDAO.DALException {
-        BrugerDTO user = null;
+    public Users() throws Exception {
         try {
-            user = dao.getBruger(id);
-        } catch (Exception e) {
-            e.printStackTrace();
+            userLogic = new BrugerLogic();
+        } catch (Exception ex) {
+            throw new Exception("Server error");
         }
-        return user;
     }
 
-    @DELETE
-    @Path("{id}")
-    public void deleteUser(@PathParam("id") int id) throws IBrugerDAO.DALException {
+    @GET
+    public List<BrugerDTO> getUserList() throws Exception {
+        try {
+            List<BrugerDTO> list = userLogic.getBrugerList();
+            return list;
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
 
+    @GET
+    @Path("{id}")
+    public BrugerDTO getUser(@PathParam("id") int id) throws Exception {
+        try {
+            BrugerDTO user = userLogic.getBruger(id);
+            return user;
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
     }
 }
