@@ -1,5 +1,6 @@
 package dao;
 
+import dto.BrugerDTO;
 import dto.RaavareDTO;
 
 import java.sql.*;
@@ -17,8 +18,24 @@ public class RaavareDAO implements IRaavareDAO {
     }
 
     @Override
-    public RaavareDTO getRaavare(int raavareId) throws DALException {
-        return null;
+    public RaavareDTO getRaavare(int raavareId) throws Exception {
+        RaavareDTO raavare = new RaavareDTO();
+        PreparedStatement ps = createConnection().prepareStatement("SELECT * FROM Raavare WHERE raavareId =?");
+        ps.setInt(1,raavareId);
+
+        try {
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                raavare.setRaavareId(rs.getInt("raavareId"));
+                raavare.setRaavareNavn(rs.getString("raavareNavn"));
+            } rs.close();
+        } catch (SQLIntegrityConstraintViolationException ex){
+            throw new IBrugerDAO.DALException("Fejl ved hentning af raavare" +" "+ ex.getMessage());
+        }catch (SQLException ex){
+            throw new IBrugerDAO.DALException(ex.getMessage());
+        }
+        return raavare;
     }
 
     @Override

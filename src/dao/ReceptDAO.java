@@ -1,5 +1,6 @@
 package dao;
 
+import dto.BrugerDTO;
 import dto.ReceptDTO;
 
 import java.sql.*;
@@ -18,8 +19,25 @@ public class ReceptDAO implements IReceptDAO {
     }
 
         @Override
-        public ReceptDTO getRecept ( int receptId) throws DALException {
-            return null;
+        public ReceptDTO getRecept ( int receptId) throws Exception {
+            ReceptDTO recept = new ReceptDTO();
+            PreparedStatement ps = createConnection().prepareStatement("SELECT * FROM Recept WHERE receptId =?");
+            ps.setInt(1,receptId);
+
+            try {
+                ResultSet rs = ps.executeQuery();
+
+                while(rs.next()) {
+                    recept.setReceptId(rs.getInt("receptId"));
+                    recept.setReceptNavn(rs.getString("receptNavn"));
+                    recept.setRaavareId(rs.getInt("raavareId"));
+                } rs.close();
+            } catch (SQLIntegrityConstraintViolationException ex){
+                throw new IReceptDAO.DALException("Fejl ved hentning af recept" +" "+ ex.getMessage());
+            }catch (SQLException ex){
+                throw new IReceptDAO.DALException(ex.getMessage());
+            }
+            return recept;
         }
 
         @Override

@@ -19,6 +19,8 @@ public class RaavareDTO {
         this.raavareNavn = raavareNavn;
     }
 
+    public RaavareDTO(){}
+
     public int getRaavareId() {
         return raavareId;
     }

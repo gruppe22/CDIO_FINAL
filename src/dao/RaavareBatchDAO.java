@@ -1,6 +1,8 @@
 package dao;
 
+import dto.BrugerDTO;
 import dto.RaavareBatchDTO;
+import dto.RaavareDTO;
 
 import java.sql.*;
 import java.util.List;
@@ -20,8 +22,26 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
     }
 
     @Override
-        public RaavareBatchDTO getRaavareBatch ( int rbId) throws DALException {
-            return null;
+        public RaavareBatchDTO getRaavareBatch ( int rbId) throws Exception {
+        RaavareBatchDTO rb = new RaavareBatchDTO();
+        PreparedStatement ps = createConnection().prepareStatement("SELECT * FROM RaavareBatch WHERE rbId =?");
+        ps.setInt(1,rbId);
+
+        try {
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                rb.setRbId(rs.getInt("rbId"));
+                rb.setRaavareId(rs.getInt("raavareId"));
+                rb.setMaengde(rs.getDouble("maengde"));
+                rb.setLeverandoer(rs.getString("leverandoer"));
+            } rs.close();
+        } catch (SQLIntegrityConstraintViolationException ex){
+            throw new IBrugerDAO.DALException("Fejl ved hentning af raavarebatch" +" "+ ex.getMessage());
+        }catch (SQLException ex){
+            throw new IRaavareBatchDAO.DALException(ex.getMessage());
+        }
+        return rb;
         }
 
         @Override

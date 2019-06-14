@@ -19,7 +19,26 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
     @Override
 
     public ProduktBatchDTO getProduktBatch(int pbId) throws Exception {
-        return null;
+        ProduktBatchDTO pb = new ProduktBatchDTO();
+        PreparedStatement ps = createConnection().prepareStatement("SELECT * FROM ProduktBatch WHERE pbId =?");
+        ps.setInt(1,pbId);
+
+        try {
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                pb.setPbId(rs.getInt("pbId"));
+                pb.setReceptId(rs.getInt("receptId"));
+                pb.setStatus(rs.getInt("status"));
+                pb.setBrugerId(rs.getInt("brugerId"));
+                pb.setRbId(rs.getInt("rbId"));
+            } rs.close();
+        } catch (SQLIntegrityConstraintViolationException ex){
+            throw new IProduktBatchDAO.DALException("Fejl ved hentning af produktbatch" +" "+ ex.getMessage());
+        }catch (SQLException ex){
+            throw new IProduktBatchDAO.DALException(ex.getMessage());
+        }
+        return pb;
     }
 
     @Override

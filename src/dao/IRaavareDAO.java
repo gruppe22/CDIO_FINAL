@@ -5,7 +5,7 @@ import dto.RaavareDTO;
 import java.util.List;
 
 public interface IRaavareDAO {
-    RaavareDTO getRaavare(int raavareId) throws DALException;
+    RaavareDTO getRaavare(int raavareId) throws Exception;
     List<RaavareDTO> getRaavareList() throws DALException;
     void createRaavare(RaavareDTO raavare) throws DALException;
     void updateRaavare(RaavareDTO raavare) throws DALException;
