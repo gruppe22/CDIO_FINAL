@@ -2,18 +2,26 @@ package logic;
 
 import dao.BrugerDAO;
 import dto.BrugerDTO;
+import java.util.List;
 
 public class BrugerLogic {
     private BrugerDAO dao = new BrugerDAO();
 
     public BrugerDTO getBruger(int id) throws Exception {
-        BrugerDTO user = new BrugerDTO();
         try {
-            user = dao.getBruger(id);
+            return dao.getBruger(id);
         }
         catch (Exception ex) {
             throw new Exception(ex);
         }
-        return user;
+    }
+
+    public List<BrugerDTO> getBrugerList() throws Exception {
+        try {
+            return dao.getBrugerList();
+        }
+        catch (Exception ex) {
+            throw new Exception(ex);
+        }
     }
 }
