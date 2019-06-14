@@ -83,8 +83,8 @@ public class BrugerDAO implements IBrugerDAO {
 
     @Override
     public void createBruger(BrugerDTO opr) throws DALException {
-        Connection c = createConnection();
-        try {
+        
+        try(Connection c = createConnection();) {
             PreparedStatement ps = c.prepareStatement("insert into Bruger values (?,?,?,?,?)");
             ps.setInt(1, opr.getOprId());
             ps.setString(2, opr.getOprNavn());
