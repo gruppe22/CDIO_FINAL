@@ -17,6 +17,7 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
         }
     }
     @Override
+
     public ProduktBatchDTO getProduktBatch(int pbId) throws Exception {
         return null;
     }
@@ -28,19 +29,17 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
 
     @Override
     public void createProduktBatch(ProduktBatchDTO pb) throws DALException {
-        Connection c = createConnection();
-        try {
-            PreparedStatement ps = c.prepareStatement("insert into ProduktBatch values (?,?,?,?,?,?,?,?)");
+        try (Connection c = createConnection()){
+            PreparedStatement ps = c.prepareStatement("insert into ProduktBatch values (?,?,?,?,?)");
             ps.setInt(1, pb.getPbId());
             ps.setInt(2, pb.getReceptId());
             ps.setInt(3, pb.getStatus());
             ps.setInt(4, pb.getRbId());
             ps.setInt(5, pb.getStatus());
             ps.execute();
-            c.close();
 
             } catch (SQLIntegrityConstraintViolationException ex){
-                throw new IProduktBatchDAO.DALException("Fejl ved oprettelse af produktbatch");
+                throw new IProduktBatchDAO.DALException("Fejl ved oprettelse af produktbatch:" +" "+ ex.getMessage());
             }catch (SQLException ex){
                 throw new IProduktBatchDAO.DALException(ex.getMessage());
             }
@@ -48,7 +47,21 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
         }
 
     @Override
-    public void updateProduktBatch(ProduktBatchDTO produktbatch) throws Exception {
+    public void updateProduktBatch(ProduktBatchDTO pb) throws Exception {
+        try (Connection c = createConnection()) {
+            PreparedStatement ps = c.prepareStatement("UPDATE `Produktbatch` SET `pbId`= ?,`receptId`= ?,`status` = ?, `brugerId` =?, `rbId`=? WHERE `pbId` = ?;");
+            ps.setInt(1, pb.getPbId());
+            ps.setInt(2, pb.getReceptId());
+            ps.setInt(3, pb.getStatus());
+            ps.setInt(4, pb.getBrugerId());
+            ps.setInt(5, pb.getRbId());
+            ps.setInt(6, pb.getPbId());
+            ps.executeUpdate();
+
+
+        } catch (SQLException e) {
+            throw new IProduktBatchDAO.DALException(e.getMessage());
+        }
 
     }
 }

@@ -37,7 +37,7 @@ public class RaavareDAO implements IRaavareDAO {
             c.close();
 
         } catch (SQLIntegrityConstraintViolationException ex){
-            throw new IRaavareDAO.DALException("Fejl ved oprettelse af raavare");
+            throw new IRaavareDAO.DALException("Fejl ved oprettelse af raavare:" + " " + ex.getMessage());
         }catch (SQLException ex){
             throw new IRaavareDAO.DALException(ex.getMessage());
         }
@@ -46,6 +46,16 @@ public class RaavareDAO implements IRaavareDAO {
 
     @Override
     public void updateRaavare(RaavareDTO raavare) throws DALException {
+        try (Connection c = createConnection()) {
+            PreparedStatement ps = c.prepareStatement("UPDATE `Raavare` SET `raavareId`= ?,`raavareNavn`= ? WHERE `raavareId` = ?;");
+            ps.setInt(1, raavare.getRaavareId());
+            ps.setString(2, raavare.getRaavareNavn());
+            ps.setInt(3, raavare.getRaavareId());
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new IRaavareDAO.DALException(e.getMessage());
+        }
 
     }
 }

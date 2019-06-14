@@ -6,6 +6,13 @@ public class ReceptDTO
     int receptId;
     /** Receptnavn min. 2 max. 20 karakterer */
     String receptNavn;
+    int raavareId;
+
+    public ReceptDTO(int receptId, String receptNavn) {
+        this.receptId = receptId;
+        this.receptNavn = receptNavn;
+        this.raavareId = raavareId;
+    }
 
     public int getReceptId() {
         return receptId;
@@ -22,4 +29,8 @@ public class ReceptDTO
     public void setReceptNavn(String receptNavn) {
         this.receptNavn = receptNavn;
     }
+
+    public int getRaavareId(){return raavareId;}
+
+    public void setRaavareId(int raavareId){this.raavareId = raavareId;}
 }

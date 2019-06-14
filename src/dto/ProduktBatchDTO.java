@@ -8,11 +8,13 @@ public class ProduktBatchDTO {
     /** recept id i området 1-99999999. Vælges af brugerne */
     int receptId;
     int rbId;
+    int brugerId;
 
-    public ProduktBatchDTO(int pbId, int status, int receptId, int rbId) {
+    public ProduktBatchDTO(int pbId, int status, int receptId, int brugerId, int rbId) {
         this.pbId = pbId;
         this.status = status;
         this.receptId = receptId;
+        this.brugerId = brugerId;
         this.rbId = rbId;
     }
 
@@ -47,4 +49,8 @@ public class ProduktBatchDTO {
     public void setRbId(int rbId){
         this.rbId = rbId;
     }
+
+    public int getBrugerId() { return brugerId;
+    }
+    public void setBrugerId(int brugerId){this.brugerId = brugerId;}
 }
