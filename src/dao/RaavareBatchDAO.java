@@ -1,10 +1,9 @@
 package dao;
 
-import dto.BrugerDTO;
 import dto.RaavareBatchDTO;
-import dto.RaavareDTO;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RaavareBatchDAO implements IRaavareBatchDAO {
@@ -46,12 +45,63 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
 
         @Override
         public List<RaavareBatchDTO> getRaavareBatchList () throws DALException {
-            return null;
+            try (Connection c = createConnection()) {
+                List<RaavareBatchDTO> rbList = new ArrayList<>();
+
+                Statement statement = c.createStatement();
+                ResultSet rs = statement.executeQuery("SELECT * FROM `RaavareBatch`");
+
+                while (rs.next()) {
+                    // Setting up a New User DTO
+                    RaavareBatchDTO rb = new RaavareBatchDTO();
+
+                    // All parameters
+                    rb.setRbId(rs.getInt("rbId"));
+                    rb.setRaavareId(rs.getInt("raavareId"));
+                    rb.setMaengde(rs.getDouble("maengde"));
+                    rb.setLeverandoer(rs.getString("leverandoer"));
+
+
+
+                    // Add user to list
+                    rbList.add(rb);
+                }
+
+                return rbList;
+
+            } catch (SQLException ex) {
+                throw new IRaavareBatchDAO.DALException(ex.getMessage());
+            }
         }
 
         @Override
         public List<RaavareBatchDTO> getRaavareBatchList ( int raavareId) throws DALException {
-            return null;
+            try (Connection c = createConnection()) {
+                List<RaavareBatchDTO> rbList = new ArrayList<>();
+
+                PreparedStatement ps = c.prepareStatement("SELECT * FROM `RaavareBatch` WHERE `raavareId` =?");
+                ps.setInt(1, raavareId);
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    // Setting up a New User DTO
+                    RaavareBatchDTO rb = new RaavareBatchDTO();
+
+                    // All parameters
+                    rb.setRbId(rs.getInt("rbId"));
+                    rb.setRaavareId(rs.getInt("raavareId"));
+                    rb.setMaengde(rs.getDouble("maengde"));
+                    rb.setLeverandoer(rs.getString("leverandoer"));
+
+                    // Add user to list
+                    rbList.add(rb);
+                }
+
+                return rbList;
+
+            } catch (SQLException ex) {
+                throw new IRaavareBatchDAO.DALException(ex.getMessage());
+            }
         }
 
         @Override

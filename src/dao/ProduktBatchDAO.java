@@ -1,8 +1,10 @@
 package dao;
 
+import dto.BrugerDTO;
 import dto.ProduktBatchDTO;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProduktBatchDAO implements IProduktBatchDAO {
@@ -42,8 +44,35 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
     }
 
     @Override
-    public List<ProduktBatchDTO> getProduktBatchList() throws Exception {
-        return null;
+    public List<ProduktBatchDTO> getProduktBatchList() throws DALException {
+        try (Connection c = createConnection()) {
+            List<ProduktBatchDTO> pbList = new ArrayList<>();
+
+            Statement statement = c.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM `ProduktBatch`");
+
+            while (rs.next()) {
+                // Setting up a New User DTO
+                ProduktBatchDTO pb = new ProduktBatchDTO();
+
+                // All parameters
+                pb.setPbId(rs.getInt("pbId"));
+                pb.setReceptId(rs.getInt("receptId"));
+                pb.setStatus(rs.getInt("status"));
+                pb.setBrugerId(rs.getInt("brugerId"));
+                pb.setRbId(rs.getInt("rbId"));
+
+
+
+                // Add user to list
+                pbList.add(pb);
+            }
+
+            return pbList;
+
+        } catch (SQLException ex) {
+            throw new IProduktBatchDAO.DALException(ex.getMessage());
+        }
     }
 
     @Override

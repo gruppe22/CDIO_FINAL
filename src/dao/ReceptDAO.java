@@ -1,9 +1,9 @@
 package dao;
 
-import dto.BrugerDTO;
 import dto.ReceptDTO;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReceptDAO implements IReceptDAO {
@@ -42,7 +42,30 @@ public class ReceptDAO implements IReceptDAO {
 
         @Override
         public List<ReceptDTO> getReceptList () throws DALException {
-            return null;
+            try (Connection c = createConnection()) {
+                List<ReceptDTO> receptList = new ArrayList<>();
+
+                Statement statement = c.createStatement();
+                ResultSet rs = statement.executeQuery("SELECT * FROM Recept");
+
+                while (rs.next()) {
+                    // Setting up a New User DTO
+                    ReceptDTO recept = new ReceptDTO();
+
+                    // All parameters
+                    recept.setReceptId(rs.getInt("receptId"));
+                    recept.setReceptNavn(rs.getString("receptNavn"));
+                    recept.setRaavareId(rs.getInt("raavareId"));
+
+                    // Add user to list
+                    receptList.add(recept);
+                }
+
+                return receptList;
+
+            } catch (SQLException ex) {
+                throw new IReceptDAO.DALException(ex.getMessage());
+            }
         }
 
         @Override
