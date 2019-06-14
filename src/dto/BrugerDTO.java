@@ -32,9 +32,8 @@ public class BrugerDTO {
         this.rolle = rolle;
     }
 
-    public BrugerDTO() {
+    public BrugerDTO() {    }
 
-    }
 
     public int getOprId() {
         return oprId;

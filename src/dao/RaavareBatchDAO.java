@@ -36,18 +36,16 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
 
         @Override
         public void createRaavareBatch (RaavareBatchDTO raavarebatch) throws DALException {
-            Connection c = createConnection();
-            try {
+            try (Connection c = createConnection()){
                 PreparedStatement ps = c.prepareStatement("insert into RaavareBatch values (?,?,?,?)");
                 ps.setInt(1, raavarebatch.getRbId());
                 ps.setInt(2, raavarebatch.getRaavareId());
                 ps.setDouble(3, raavarebatch.getMaengde());
                 ps.setString(4, raavarebatch.getLeverandoer());
                 ps.execute();
-                c.close();
 
             } catch (SQLIntegrityConstraintViolationException ex){
-                throw new IRaavareBatchDAO.DALException("Fejl ved oprettelse af raavarebatch");
+                throw new IRaavareBatchDAO.DALException("Fejl ved oprettelse af raavarebatch:" +" "+ ex.getMessage());
             }catch (SQLException ex){
                 throw new IRaavareBatchDAO.DALException(ex.getMessage());
             }
@@ -55,7 +53,19 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
 
         @Override
         public void updateRaavareBatch (RaavareBatchDTO raavarebatch) throws DALException {
+            try (Connection c = createConnection()) {
+                PreparedStatement ps = c.prepareStatement("UPDATE `RaavareBatch` SET `rbId`= ?,`RaavareId`= ?,`maengde` = ?, `leverandoer` =? WHERE `rbId` = ?;");
+                ps.setInt(1, raavarebatch.getRbId());
+                ps.setInt(2, raavarebatch.getRaavareId());
+                ps.setDouble(3, raavarebatch.getMaengde());
+                ps.setString(4, raavarebatch.getLeverandoer());
+                ps.setInt(5,raavarebatch.getRbId());
+                ps.executeUpdate();
 
+
+            } catch (SQLException e) {
+                throw new IRaavareBatchDAO.DALException(e.getMessage());
+            }
         }
     }
 

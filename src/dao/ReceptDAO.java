@@ -46,7 +46,18 @@ public class ReceptDAO implements IReceptDAO {
 
         @Override
         public void updateRecept (ReceptDTO recept) throws DALException {
+            try (Connection c = createConnection()) {
+                PreparedStatement ps = c.prepareStatement("UPDATE `Recept` SET `receptId`= ?,`receptNavn`= ?,`raavareId` = ? WHERE `receptId` = ?;");
+                ps.setInt(1, recept.getReceptId());
+                ps.setString(2, recept.getReceptNavn());
+                ps.setInt(3, recept.getRaavareId());
+                ps.setInt(4, recept.getReceptId());
+                ps.executeUpdate();
 
+
+            } catch (SQLException e) {
+                throw new IReceptDAO.DALException(e.getMessage());
+            }
         }
     }
 
