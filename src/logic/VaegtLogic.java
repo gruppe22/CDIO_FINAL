@@ -7,13 +7,12 @@ public class VaegtLogic {
     private IProduktBatchDAO batchDAO = new ProduktBatchDAO();
     private IReceptDAO receptDAO = new ReceptDAO();
 
-    public ReceptDTO getRecept(int receptId) {
+    public ReceptDTO getRecept(int receptId) throws Exception {
         try {
             return receptDAO.getRecept(receptId);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new Exception(e);
         }
-        return null;
     }
 
     public ProduktBatchDTO getProduktBatch(int batchId) {
