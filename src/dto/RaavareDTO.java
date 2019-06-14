@@ -1,8 +1,6 @@
 package dto;
 
 public class RaavareDTO {
-    public int getRaavareId;
-    public String getRaavareNavn;
     /**
      * raavare id i området 1-99999999 vælges af brugerne
      */

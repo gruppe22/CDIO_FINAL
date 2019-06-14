@@ -31,8 +31,8 @@ public class RaavareDAO implements IRaavareDAO {
         Connection c = createConnection();
         try {
             PreparedStatement ps = c.prepareStatement("insert into Raavare values (?,?)");
-            ps.setInt(1, raavare.getRaavareId);
-            ps.setString(2, raavare.getRaavareNavn);
+            ps.setInt(1, raavare.getRaavareId());
+            ps.setString(2, raavare.getRaavareNavn());
             ps.execute();
             c.close();
 

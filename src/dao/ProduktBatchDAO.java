@@ -1,6 +1,5 @@
 package dao;
 
-import dto.BrugerDTO;
 import dto.ProduktBatchDTO;
 
 import java.sql.*;
@@ -35,7 +34,7 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
             ps.setInt(1, pb.getPbId());
             ps.setInt(2, pb.getReceptId());
             ps.setInt(3, pb.getStatus());
-            ps.setInt(4, pb.getReceptId());
+            ps.setInt(4, pb.getRbId());
             ps.setInt(5, pb.getStatus());
             ps.execute();
             c.close();
