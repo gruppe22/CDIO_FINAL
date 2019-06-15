@@ -47,7 +47,7 @@
                         angular.element('#ajaxchangediv').html('<a class="nav-link" href="#/ListUsers"> Id fundet. Klik her</a>');
                     }
                     else if (!data.rolle) {
-                        angular.element('#ajaxchangediv').html('<p color="red"> Indtastet brugerId har ingen rolle, eller kunne ikke findes</p>')
+                        angular.element('#ajaxchangediv').html('<p style="color : red;"> Indtastet brugerId har ingen rolle, eller kunne ikke findes</p>')
                     }
                 },
                 failure : function () {
