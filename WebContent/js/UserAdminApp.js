@@ -23,22 +23,38 @@
         });
 
     var LogIndController = function($scope) {
-        var settings = {
-            "url": "http://localhost:8080/rest/users/login/" + $('#brugerlogininput').val(),
+        /*var settings = {
+            "url": "http://localhost:8080/rest/brugere/" + angular.element('#brugerlogininput').val(),
             "method": "GET",
             "timeout": 0,
             "success": function(data) {
                 if (data.rolle == "administrator") {
-                    $('#ajaxchangediv').html('<a class="nav-link" href="#/ListUsers> Id findes. Klik her.</a>')
+                    angular.element('#ajaxchangediv').html('<a class="nav-link" href="#/ListUsers> Id findes. Klik her.</a>')
                 }
             },
             "failure" : function() {
-                $('#ajaxchangediv').html('<p color = "red">BrugerId kunne ikke findes.</p>')
+                angular.element('#ajaxchangediv').html('<p color = "red">BrugerId kunne ikke findes.</p>')
             }
-        };
+        };*/
 
         $scope.submitLogIn = function() {
-            $.ajax(settings);
+            $.ajax({
+                url: "http://localhost:8080/rest/brugere/" + angular.element('#brugerlogininput').val(),
+                method: "GET",
+                timeout: 0,
+                success: function (data) {
+                    if (data.rolle == "administrator") {
+                        angular.element('#ajaxchangediv').html('<a class="nav-link" href="#/ListUsers"> Id fundet. Klik her</a>');
+                    }
+                    else if (!data.rolle) {
+                        angular.element('#ajaxchangediv').html('<p color="red"> Indtastet brugerId har ingen rolle, eller kunne ikke findes</p>')
+                    }
+                },
+                failure : function () {
+                    angular.element('#ajaxchangediv').html('<p style="color : red;"> BrugerId kunne ikke findes. </p>')
+
+                }
+            });
         }
     };
 
