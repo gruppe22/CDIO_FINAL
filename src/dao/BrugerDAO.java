@@ -35,7 +35,7 @@ public class BrugerDAO implements IBrugerDAO {
                 user.setRolle(rs.getString("rolle"));
             } rs.close();
              } catch (SQLIntegrityConstraintViolationException ex){
-            throw new DALException("Fejl ved oprettelse af bruger" +" "+ ex.getMessage());
+            throw new DALException("Fejl ved hentning af bruger" +" "+ ex.getMessage());
             }catch (SQLException ex){
             throw new DALException(ex.getMessage());
             }

@@ -18,6 +18,8 @@ public class RaavareBatchDTO
         this.leverandoer = leverandoer;
     }
 
+    public RaavareBatchDTO(){}
+
     public int getRbId() {
         return rbId;
     }

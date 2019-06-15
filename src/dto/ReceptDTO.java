@@ -14,6 +14,8 @@ public class ReceptDTO
         this.raavareId = raavareId;
     }
 
+    public ReceptDTO(){}
+
     public int getReceptId() {
         return receptId;
     }

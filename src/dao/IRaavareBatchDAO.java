@@ -5,11 +5,12 @@ import dto.RaavareBatchDTO;
 import java.util.List;
 
 public interface IRaavareBatchDAO {
-    RaavareBatchDTO getRaavareBatch(int rbId) throws DALException;
+    RaavareBatchDTO getRaavareBatch(int rbId) throws Exception;
     List<RaavareBatchDTO> getRaavareBatchList() throws DALException;
     List<RaavareBatchDTO> getRaavareBatchList(int raavareId) throws DALException;
     void createRaavareBatch(RaavareBatchDTO raavarebatch) throws DALException;
     void updateRaavareBatch(RaavareBatchDTO raavarebatch) throws DALException;
+
     class DALException extends Exception {
         //Til Java serialisering...
         private static final long serialVersionUID = 7355418246336739229L;

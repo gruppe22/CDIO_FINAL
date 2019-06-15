@@ -3,6 +3,7 @@ package dao;
 import dto.RaavareDTO;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RaavareDAO implements IRaavareDAO {
@@ -17,13 +18,51 @@ public class RaavareDAO implements IRaavareDAO {
     }
 
     @Override
-    public RaavareDTO getRaavare(int raavareId) throws DALException {
-        return null;
+    public RaavareDTO getRaavare(int raavareId) throws Exception {
+        RaavareDTO raavare = new RaavareDTO();
+        PreparedStatement ps = createConnection().prepareStatement("SELECT * FROM Raavare WHERE raavareId =?");
+        ps.setInt(1,raavareId);
+
+        try {
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                raavare.setRaavareId(rs.getInt("raavareId"));
+                raavare.setRaavareNavn(rs.getString("raavareNavn"));
+            } rs.close();
+        } catch (SQLIntegrityConstraintViolationException ex){
+            throw new IBrugerDAO.DALException("Fejl ved hentning af raavare" +" "+ ex.getMessage());
+        }catch (SQLException ex){
+            throw new IBrugerDAO.DALException(ex.getMessage());
+        }
+        return raavare;
     }
 
     @Override
     public List<RaavareDTO> getRaavareList() throws DALException {
-        return null;
+        try (Connection c = createConnection()) {
+            List<RaavareDTO> raavareList = new ArrayList<>();
+
+            Statement statement = c.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM `Raavare`");
+
+            while (rs.next()) {
+                // Setting up a New User DTO
+                RaavareDTO raavare = new RaavareDTO();
+
+                // All parameters
+                raavare.setRaavareId(rs.getInt("raavareId"));
+                raavare.setRaavareNavn(rs.getString("raavareNavn"));
+
+                // Add user to list
+                raavareList.add(raavare);
+            }
+
+            return raavareList;
+
+        } catch (SQLException ex) {
+            throw new IRaavareDAO.DALException(ex.getMessage());
+        }
     }
 
     @Override
