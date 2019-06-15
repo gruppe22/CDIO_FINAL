@@ -53,15 +53,40 @@ public class Brugere {
         try {
             BrugerDTO user = new BrugerDTO(
                     json.getInt("oprId"),
-                    json.getString("userName"),
+                    json.getString("oprNavn"),
                     json.getString("ini"),
-                    json.getString("cprNumber"),
-                    json.getString("role")
+                    json.getString("cpr"),
+                    json.getString("rolle")
             );
             userLogic.createBruger(user);
             return Response.status(200)
                     .type(MediaType.APPLICATION_JSON_TYPE)
                     .entity(user)
+                    .build();
+        } catch (Exception ex) {
+            return Response.status(400)
+                    .type(MediaType.TEXT_PLAIN)
+                    .entity(ex.getMessage())
+                    .build();
+        }
+    }
+
+    @PUT
+    public Response updateUser(String body) {
+        JSONObject json = new JSONObject(body);
+
+        try {
+            BrugerDTO dto = new BrugerDTO(
+                    json.getInt("oprId"),
+                    json.getString("oprNavn"),
+                    json.getString("ini"),
+                    json.getString("cpr"),
+                    json.getString("rolle")
+            );
+            userLogic.updateBruger(dto);
+            return Response.status(200)
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .entity(dto)
                     .build();
         } catch (Exception ex) {
             return Response.status(400)

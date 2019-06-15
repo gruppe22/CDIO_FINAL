@@ -10,7 +10,11 @@ public class BrugerLogic {
 
     public BrugerDTO getBruger(int id) throws Exception {
         try {
-            return dao.getBruger(id);
+            BrugerDTO dto = dao.getBruger(id);
+            if (dto.getOprId() != 0)
+                return dto;
+            else
+                return null;
         }
         catch (Exception ex) {
             throw new Exception(ex);
@@ -33,7 +37,24 @@ public class BrugerLogic {
 
         try {
             dao.createBruger(user);
-            return dao.getBruger(user.getOprId());
+            return user;
+        }
+        catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+
+    public  BrugerDTO updateBruger(BrugerDTO user) throws Exception {
+
+        if (getBruger(user.getOprId()) == null)
+            throw new Exception("Brugeren findes ikke");
+
+        if (user.getOprNavn().equals("") || user.getIni().equals("") || user.getCpr().equals("") ||user.getRolle().equals(""))
+            throw new Exception("Felterne må ikke være tomme");
+
+        try {
+            dao.updateBruger(user);
+            return user;
         }
         catch (Exception ex) {
             throw new Exception(ex);
