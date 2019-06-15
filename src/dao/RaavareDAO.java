@@ -21,6 +21,7 @@ public class RaavareDAO implements IRaavareDAO {
             while(rs.next()) {
                 raavare.setRaavareId(rs.getInt("raavareId"));
                 raavare.setRaavareNavn(rs.getString("raavareNavn"));
+                raavare.setLeverandoer(rs.getString("leverandoer"));
             }
             rs.close();
             return raavare;
@@ -44,6 +45,7 @@ public class RaavareDAO implements IRaavareDAO {
                 // All parameters
                 raavare.setRaavareId(rs.getInt("raavareId"));
                 raavare.setRaavareNavn(rs.getString("raavareNavn"));
+                raavare.setLeverandoer(rs.getString("leverandoer"));
 
                 // Add user to list
                 raavareList.add(raavare);
@@ -59,11 +61,11 @@ public class RaavareDAO implements IRaavareDAO {
     @Override
     public void createRaavare(RaavareDTO raavare) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("insert into Raavare values (?,?)");
+            PreparedStatement ps = c.prepareStatement("insert into Raavare values (?,?,?)");
             ps.setInt(1, raavare.getRaavareId());
             ps.setString(2, raavare.getRaavareNavn());
+            ps.setString(3, raavare.getLeverandoer());
             ps.execute();
-            c.close();
 
         } catch (SQLException | ConnectionManager.DALException ex){
             throw new DALException("Database fejl");
@@ -73,10 +75,11 @@ public class RaavareDAO implements IRaavareDAO {
     @Override
     public void updateRaavare(RaavareDTO raavare) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("UPDATE `Raavare` SET `raavareId`= ?,`raavareNavn`= ? WHERE `raavareId` = ?;");
+            PreparedStatement ps = c.prepareStatement("UPDATE `Raavare` SET `raavareId`= ?,`raavareNavn`= ?,`leverandoer`= ? WHERE `raavareId` = ?;");
             ps.setInt(1, raavare.getRaavareId());
             ps.setString(2, raavare.getRaavareNavn());
-            ps.setInt(3, raavare.getRaavareId());
+            ps.setString(3,raavare.getLeverandoer());
+            ps.setInt(4, raavare.getRaavareId());
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionManager.DALException ex){

@@ -22,7 +22,6 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
                 rb.setRbId(rs.getInt("rbId"));
                 rb.setRaavareId(rs.getInt("raavareId"));
                 rb.setMaengde(rs.getDouble("maengde"));
-                rb.setLeverandoer(rs.getString("leverandoer"));
             }
             rs.close();
             return rb;
@@ -47,7 +46,6 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
                 rb.setRbId(rs.getInt("rbId"));
                 rb.setRaavareId(rs.getInt("raavareId"));
                 rb.setMaengde(rs.getDouble("maengde"));
-                rb.setLeverandoer(rs.getString("leverandoer"));
 
 
 
@@ -79,7 +77,6 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
                 rb.setRbId(rs.getInt("rbId"));
                 rb.setRaavareId(rs.getInt("raavareId"));
                 rb.setMaengde(rs.getDouble("maengde"));
-                rb.setLeverandoer(rs.getString("leverandoer"));
 
                 // Add user to list
                 rbList.add(rb);
@@ -95,11 +92,10 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
     @Override
     public void createRaavareBatch (RaavareBatchDTO raavarebatch) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("insert into RaavareBatch values (?,?,?,?)");
+            PreparedStatement ps = c.prepareStatement("insert into RaavareBatch values (?,?,?)");
             ps.setInt(1, raavarebatch.getRbId());
             ps.setInt(2, raavarebatch.getRaavareId());
             ps.setDouble(3, raavarebatch.getMaengde());
-            ps.setString(4, raavarebatch.getLeverandoer());
             ps.execute();
 
         } catch (SQLException | ConnectionManager.DALException ex){
@@ -110,12 +106,11 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
     @Override
     public void updateRaavareBatch (RaavareBatchDTO raavarebatch) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("UPDATE `RaavareBatch` SET `rbId`= ?,`RaavareId`= ?,`maengde` = ?, `leverandoer` =? WHERE `rbId` = ?;");
+            PreparedStatement ps = c.prepareStatement("UPDATE `RaavareBatch` SET `rbId`= ?,`RaavareId`= ?,`maengde` = ? WHERE `rbId` = ?;");
             ps.setInt(1, raavarebatch.getRbId());
             ps.setInt(2, raavarebatch.getRaavareId());
             ps.setDouble(3, raavarebatch.getMaengde());
-            ps.setString(4, raavarebatch.getLeverandoer());
-            ps.setInt(5,raavarebatch.getRbId());
+            ps.setInt(4,raavarebatch.getRbId());
             ps.executeUpdate();
 
 

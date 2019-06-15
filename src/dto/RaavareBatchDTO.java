@@ -9,13 +9,10 @@ public class RaavareBatchDTO
     /** mængde på lager */
     double maengde;
 
-    String leverandoer;
-
-    public RaavareBatchDTO(int rbId, int raavareId, double maengde, String leverandoer) {
+    public RaavareBatchDTO(int rbId, int raavareId, double maengde) {
         this.rbId = rbId;
         this.raavareId = raavareId;
         this.maengde = maengde;
-        this.leverandoer = leverandoer;
     }
 
     public RaavareBatchDTO(){}
@@ -42,13 +39,5 @@ public class RaavareBatchDTO
 
     public void setMaengde(double maengde) {
         this.maengde = maengde;
-    }
-
-    public String getLeverandoer() {
-        return leverandoer;
-    }
-
-    public void setLeverandoer(String leverandoer) {
-        this.leverandoer = leverandoer;
     }
 }
