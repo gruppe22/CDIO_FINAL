@@ -51,8 +51,8 @@ public class VaegtController {
             input = socket.sendAndAwaitReturn("Indtast produkt-batch-nummer: ");
             int batchId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
             ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
-            ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
-            socket.sendAndAwaitReturn("Recept: " + recept.getReceptNavn());
+            //ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
+            //socket.sendAndAwaitReturn("Recept: " + recept.getReceptNavn());
 
             /*
              * Resten mangler.. Pkt. 7 og frem
