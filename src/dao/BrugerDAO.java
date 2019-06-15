@@ -8,23 +8,14 @@ import java.util.List;
 
 public class BrugerDAO implements IBrugerDAO {
 
-    private Connection createConnection() throws DALException {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://anfran.dk/cdio?"
-                    + "user=cdio&password=chokoladekage22");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DALException(e.getMessage());
-        }
-    }
+    ConnectionManager connection = new ConnectionManager();
 
     @Override
-    public BrugerDTO getBruger(int oprId) throws Exception {
-        BrugerDTO user = new BrugerDTO();
-        PreparedStatement ps = createConnection().prepareStatement("SELECT * FROM Bruger WHERE brugerId =?");
-        ps.setInt(1,oprId);
-
-        try {
+    public BrugerDTO getBruger(int oprId) throws DALException {
+        try (Connection c = connection.createConnection()) {
+            BrugerDTO user = new BrugerDTO();
+            PreparedStatement ps = c.prepareStatement("SELECT * FROM Bruger WHERE brugerId =?");
+            ps.setInt(1,oprId);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
@@ -33,18 +24,17 @@ public class BrugerDAO implements IBrugerDAO {
                 user.setOprNavn(rs.getString("brugerNavn"));
                 user.setCpr(rs.getString("cpr"));
                 user.setRolle(rs.getString("rolle"));
-            } rs.close();
-             } catch (SQLIntegrityConstraintViolationException ex){
-            throw new DALException("Fejl ved hentning af bruger" +" "+ ex.getMessage());
-            }catch (SQLException ex){
-            throw new DALException(ex.getMessage());
             }
+            rs.close();
             return user;
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new DALException("Database fejl");
+        }
     }
 
     @Override
     public List<BrugerDTO> getBrugerList() throws DALException {
-        try (Connection c = createConnection()) {
+        try (Connection c = connection.createConnection()) {
             List<BrugerDTO> userList = new ArrayList<>();
 
             Statement statement = c.createStatement();
@@ -66,17 +56,16 @@ public class BrugerDAO implements IBrugerDAO {
                 // Add user to list
                 userList.add(bruger);
             }
-
             return userList;
 
-        } catch (SQLException ex) {
-            throw new DALException(ex.getMessage());
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new DALException("Database fejl");
         }
     }
 
     @Override
     public void createBruger(BrugerDTO opr) throws DALException {
-        try(Connection c = createConnection()) {
+        try (Connection c = connection.createConnection()) {
             PreparedStatement ps = c.prepareStatement("insert into Bruger values (?,?,?,?,?)");
             ps.setInt(1, opr.getOprId());
             ps.setString(2, opr.getOprNavn());
@@ -85,17 +74,14 @@ public class BrugerDAO implements IBrugerDAO {
             ps.setString(5, opr.getRolle());
             ps.execute();
 
-        } catch (SQLIntegrityConstraintViolationException ex){
-            throw new DALException("Fejl ved oprettelse af bruger:" +" "+ ex.getMessage());
-        }catch (SQLException ex){
-            throw new DALException(ex.getMessage());
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new DALException("Database fejl");
         }
-
     }
 
     @Override
     public void updateBruger(BrugerDTO opr) throws DALException {
-        try (Connection c = createConnection()) {
+        try (Connection c = connection.createConnection()) {
             PreparedStatement ps = c.prepareStatement("UPDATE `Bruger` SET `brugerId`= ?,`brugerNavn`= ?,`ini` = ?, `cpr` =? , `rolle` =? WHERE `brugerId` = ?;");
             ps.setInt(1, opr.getOprId());
             ps.setString(2, opr.getOprNavn());
@@ -105,22 +91,22 @@ public class BrugerDAO implements IBrugerDAO {
             ps.setInt(6,opr.getOprId());
             ps.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new DALException(e.getMessage());
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new DALException("Database fejl");
         }
     }
 
 
     @Override
     public void deleteBruger(BrugerDTO opr) throws DALException {
-        try (Connection c = createConnection()) {
+        try (Connection c = connection.createConnection()) {
 
             PreparedStatement ps = c.prepareStatement("DELETE FROM `Bruger` WHERE `brugerId` = ?");
             ps.setInt(1, opr.getOprId());
             ps.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new DALException(e.getMessage());
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new DALException("Database fejl");
         }
     }
 }

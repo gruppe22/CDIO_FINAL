@@ -7,40 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RaavareDAO implements IRaavareDAO {
-    private Connection createConnection() throws IRaavareDAO.DALException {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://anfran.dk/cdio?"
-                    + "user=cdio&password=chokoladekage22");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DALException(e.getMessage());
-        }
-    }
+
+    ConnectionManager connection = new ConnectionManager();
 
     @Override
-    public RaavareDTO getRaavare(int raavareId) throws Exception {
-        RaavareDTO raavare = new RaavareDTO();
-        PreparedStatement ps = createConnection().prepareStatement("SELECT * FROM Raavare WHERE raavareId =?");
-        ps.setInt(1,raavareId);
-
-        try {
+    public RaavareDTO getRaavare(int raavareId) throws DALException {
+        try (Connection c = connection.createConnection()) {
+            RaavareDTO raavare = new RaavareDTO();
+            PreparedStatement ps = c.prepareStatement("SELECT * FROM Raavare WHERE raavareId =?");
+            ps.setInt(1,raavareId);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
                 raavare.setRaavareId(rs.getInt("raavareId"));
                 raavare.setRaavareNavn(rs.getString("raavareNavn"));
-            } rs.close();
-        } catch (SQLIntegrityConstraintViolationException ex){
-            throw new IBrugerDAO.DALException("Fejl ved hentning af raavare" +" "+ ex.getMessage());
-        }catch (SQLException ex){
-            throw new IBrugerDAO.DALException(ex.getMessage());
+            }
+            rs.close();
+            return raavare;
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new DALException("Database fejl");
         }
-        return raavare;
     }
 
     @Override
     public List<RaavareDTO> getRaavareList() throws DALException {
-        try (Connection c = createConnection()) {
+        try (Connection c = connection.createConnection()) {
             List<RaavareDTO> raavareList = new ArrayList<>();
 
             Statement statement = c.createStatement();
@@ -60,41 +51,36 @@ public class RaavareDAO implements IRaavareDAO {
 
             return raavareList;
 
-        } catch (SQLException ex) {
-            throw new IRaavareDAO.DALException(ex.getMessage());
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new DALException("Database fejl");
         }
     }
 
     @Override
     public void createRaavare(RaavareDTO raavare) throws DALException {
-        Connection c = createConnection();
-        try {
+        try (Connection c = connection.createConnection()) {
             PreparedStatement ps = c.prepareStatement("insert into Raavare values (?,?)");
             ps.setInt(1, raavare.getRaavareId());
             ps.setString(2, raavare.getRaavareNavn());
             ps.execute();
             c.close();
 
-        } catch (SQLIntegrityConstraintViolationException ex){
-            throw new IRaavareDAO.DALException("Fejl ved oprettelse af raavare:" + " " + ex.getMessage());
-        }catch (SQLException ex){
-            throw new IRaavareDAO.DALException(ex.getMessage());
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new DALException("Database fejl");
         }
-
     }
 
     @Override
     public void updateRaavare(RaavareDTO raavare) throws DALException {
-        try (Connection c = createConnection()) {
+        try (Connection c = connection.createConnection()) {
             PreparedStatement ps = c.prepareStatement("UPDATE `Raavare` SET `raavareId`= ?,`raavareNavn`= ? WHERE `raavareId` = ?;");
             ps.setInt(1, raavare.getRaavareId());
             ps.setString(2, raavare.getRaavareNavn());
             ps.setInt(3, raavare.getRaavareId());
             ps.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new IRaavareDAO.DALException(e.getMessage());
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new DALException("Database fejl");
         }
-
     }
 }

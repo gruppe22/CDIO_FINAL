@@ -6,15 +6,8 @@ import java.sql.*;
 import java.util.List;
 
 public class ProduktBatchKompDAO implements IProduktBatchKompDAO {
-    private Connection createConnection() throws IProduktBatchKompDAO.DALException {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://anfran.dk/cdio?"
-                    + "user=cdio&password=chokoladekage22");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new IProduktBatchKompDAO.DALException(e.getMessage());
-        }
-    }
+
+
 
     @Override
     public ProduktBatchKompDTO getProduktBatchKomp(int pbId, int rbId) throws DALException {

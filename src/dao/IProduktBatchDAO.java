@@ -5,22 +5,13 @@ import dto.ProduktBatchDTO;
 import java.util.List;
 
 public interface IProduktBatchDAO {
-    ProduktBatchDTO getProduktBatch(int pbId) throws Exception;
-    List<ProduktBatchDTO> getProduktBatchList() throws Exception;
-    void createProduktBatch(ProduktBatchDTO produktbatch) throws Exception;
-    void updateProduktBatch(ProduktBatchDTO produktbatch) throws Exception;
+    ProduktBatchDTO getProduktBatch(int pbId) throws DALException;
+    List<ProduktBatchDTO> getProduktBatchList() throws DALException;
+    void createProduktBatch(ProduktBatchDTO produktbatch) throws DALException;
+    void updateProduktBatch(ProduktBatchDTO produktbatch) throws DALException;
 
     class DALException extends Exception {
-        //Til Java serialisering...
-        private static final long serialVersionUID = 7355418246336739229L;
-
-        public DALException(String msg, Throwable e) {
-            super(msg,e);
-        }
-
-        DALException(String msg) {
-            super(msg);
-        }
-
+        public DALException(String message) {
+            super(message); }
     }
 }
