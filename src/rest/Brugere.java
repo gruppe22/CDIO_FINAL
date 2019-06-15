@@ -1,6 +1,5 @@
 package rest;
 
-import dao.*;
 import dto.*;
 import logic.BrugerLogic;
 import org.json.JSONObject;
@@ -9,19 +8,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("users")
+@Path("brugere")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class Users {
-    BrugerLogic userLogic;
+public class Brugere {
 
-    public Users() throws Exception {
-        try {
-            userLogic = new BrugerLogic();
-        } catch (Exception ex) {
-            throw new Exception("Server error");
-        }
-    }
+    BrugerLogic userLogic = new BrugerLogic();
 
     @GET
     public Response getUserList() {
@@ -60,7 +52,7 @@ public class Users {
 
         try {
             BrugerDTO user = new BrugerDTO(
-                    json.getInt("userId"),
+                    json.getInt("oprId"),
                     json.getString("userName"),
                     json.getString("ini"),
                     json.getString("cprNumber"),

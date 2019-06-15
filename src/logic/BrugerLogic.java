@@ -27,6 +27,10 @@ public class BrugerLogic {
     }
 
     public BrugerDTO createBruger(BrugerDTO user) throws Exception {
+
+        if (user.getOprNavn().equals("") || user.getIni().equals("") || user.getCpr().equals("") ||user.getRolle().equals(""))
+            throw new Exception("Felterne må ikke være tomme");
+
         try {
             dao.createBruger(user);
             return dao.getBruger(user.getOprId());
