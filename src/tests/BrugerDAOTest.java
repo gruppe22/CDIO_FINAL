@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class BrugerDAOTest {
 
     // Setup
-    BrugerDTO Kasper = new BrugerDTO(1, "Kasper", "KB", "2510882134", "Administrator");
-    BrugerDTO Hans = new BrugerDTO(2, "Hans Henning", "HH", "1903995783", "Pharmaceut");
-    BrugerDTO Ray = new BrugerDTO(3, "Ray Charles", "SHG", "1901565234", "Laborant");
+    BrugerDTO Kasper = new BrugerDTO(100, "Kasper", "KB", "2510882134", "Administrator");
+    BrugerDTO Hans = new BrugerDTO(101, "Hans Henning", "HH", "1903995783", "Pharmaceut");
+    BrugerDTO Ray = new BrugerDTO(102, "Ray Charles", "SHG", "1901565234", "Laborant");
     IBrugerDAO dao = new BrugerDAO();
 
-    // temp cleanup
+
 
 
 
@@ -67,6 +67,7 @@ class BrugerDAOTest {
 
     @org.junit.jupiter.api.Test
     void updateBruger() throws Exception {
+        // setup
         dao.createBruger(Kasper);
         dao.createBruger(Hans);
         dao.createBruger(Ray);
@@ -81,11 +82,19 @@ class BrugerDAOTest {
         assertEquals(Kasper.getOprNavn(),dao.getBruger(1).getOprNavn());
         assertEquals(Hans.getOprNavn(),dao.getBruger(2).getOprNavn());
         assertEquals(Ray.getOprNavn(),dao.getBruger(3).getOprNavn());
+
+        // teardown
+        dao.deleteBruger(Kasper);
+        dao.deleteBruger(Hans);
+        dao.deleteBruger(Ray);
     }
 
     @org.junit.jupiter.api.Test
     void deleteBruger() throws IBrugerDAO.DALException {
-        // Also works as teardown/cleanup
+        // setup
+        dao.createBruger(Kasper);
+        dao.createBruger(Hans);
+        dao.createBruger(Ray);
         try {
             dao.deleteBruger(Kasper);
             dao.deleteBruger(Hans);
