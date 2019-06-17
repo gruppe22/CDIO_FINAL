@@ -39,6 +39,19 @@ public class VaegtController {
         String returnString = source.substring(opening, closing);
         return returnString;
     }
+    public void initializeWeight(){
+        String input = socket.readWeight();
+        while(input != null){
+            if(input.contains("kg")){
+                break;
+            }
+            else if(input.contains("ES")){
+                input=socket.readWeight();
+            }
+            else input = socket.readWeight();
+        }
+
+    }
     public void start() throws Exception {
         //String material;
         double netWeight;
@@ -51,7 +64,7 @@ public class VaegtController {
 
             BrugerDTO user = null;
             String operatorNumber = null;
-                operatorNumber = SubStringGenerator(input, "\"", "\"", 1);
+            operatorNumber = SubStringGenerator(input, "\"", "\"", 1);
 
 
         System.out.println(operatorNumber);
@@ -65,13 +78,14 @@ public class VaegtController {
         /*
          * Approve operator
          */
- /*       input = socket.sendAndAwaitReturn(user.getOprNavn() + " - Er dette korrekt (1:Y, 2:N)", " "," ");
+
+        input = socket.sendAndAwaitReturn(user.getOprNavn(),"Er dette dit operatoernavn?" ,"");
         if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
 
             /*
              * Get product-batch number from weight
              */
-    /*        input = socket.sendAndAwaitReturn("Indtast produkt-batch-nummer: "," "," ");
+            input = socket.sendAndAwaitReturn("Indtast produkt-batch-nummer: "," "," ");
             int batchId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
             ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
             //ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
@@ -105,4 +119,4 @@ public class VaegtController {
     }
 
  */
-    }}
+    }}}

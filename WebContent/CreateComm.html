@@ -1,0 +1,26 @@
+<h1>Opret bruger</h1>
+
+<div class="col-md-8 order-md-1" ng-controller="CreateCommController">
+    <form class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="commId">Råvare-ID</label>
+                <input type="number" class="form-control" id="commId" ng-model="newComm.raavareId" value="" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="commName">Råvare navn</label>
+                <input type="text" class="form-control" id="commName" ng-model="newComm.raavareNavn" value="" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="supplier">Leverandørnavn</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="supplier" ng-model="newComm.leverandoer" required>
+                </div>
+            </div>
+        </div>
+        <button id="submit" class="btn btn-primary btn-lg btn-block" ng-click="submitCreate()" type="submit">Opret</button>
+    </form>
+    {{error}}
+</div>

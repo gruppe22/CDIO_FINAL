@@ -1,0 +1,28 @@
+<h1>Receptoversigt</h1>
+<div ng-controller="ListReceptsController">
+    <div>
+        <div class="row">
+            <div class="col-sm">
+                <b>recept ID</b>
+            </div>
+            <div class="col-sm">
+                <b>recept navn</b>
+            </div>
+            <div class="col-sm">
+            </div>
+        </div>
+    </div>
+    <div class="container" ng-repeat="recept in recepts">
+        <div class="row">
+            <div class="col-sm">
+                {{recept.receptId}}
+            </div>
+            <div class="col-sm">
+                {{recept.receptNavn}}
+            </div>
+            <div class="col-sm">
+                <a ng-href="#!/ShowRecept/{{recept.receptId}}">Vis</a>
+            </div>
+        </div>
+    </div>
+</div>
