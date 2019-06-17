@@ -13,7 +13,7 @@ public class VaegtSocket {
 
     public VaegtSocket() {
         try {
-            String host = "127.0.0.1";
+            String host = "169.254.2.2";
             int port = 8000;
             socket = new Socket(host, port);
 
@@ -52,8 +52,12 @@ public class VaegtSocket {
         return returnvalue;
     }
 
-    public String sendAndAwaitReturn(String msg) {
-        output.println("RM20 8 \"" +msg+ "\" \"\" \"&3\" crlf");
+    public String sendAndAwaitReturn(String msg, String msg2, String msg3) {
+        output.println("RM20 8 \""
+                +msg+ "\" " + "\""
+                +msg2+ "\" " + "\""
+                +msg3 + "\" ");
+
 
         String returnvalue = null;
         try {
