@@ -21,7 +21,6 @@ public class ReceptDAO implements IReceptDAO {
             while(rs.next()) {
                 recept.setReceptId(rs.getInt("receptId"));
                 recept.setReceptNavn(rs.getString("receptNavn"));
-                recept.setRaavareId(rs.getInt("raavareId"));
             }
             rs.close();
             return recept;
@@ -45,7 +44,6 @@ public class ReceptDAO implements IReceptDAO {
                 // All parameters
                 recept.setReceptId(rs.getInt("receptId"));
                 recept.setReceptNavn(rs.getString("receptNavn"));
-                recept.setRaavareId(rs.getInt("raavareId"));
 
                 // Add user to list
                 receptList.add(recept);
@@ -60,10 +58,9 @@ public class ReceptDAO implements IReceptDAO {
     @Override
     public void createRecept (ReceptDTO recept) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("insert into Recept values (?,?,?)");
+            PreparedStatement ps = c.prepareStatement("insert into Recept values (?,?)");
             ps.setInt(1, recept.getReceptId());
             ps.setString(2, recept.getReceptNavn());
-            ps.setInt(3, recept.getRaavareId());
             ps.execute();
             c.close();
 
@@ -75,11 +72,10 @@ public class ReceptDAO implements IReceptDAO {
     @Override
     public void updateRecept (ReceptDTO recept) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("UPDATE `Recept` SET `receptId`= ?,`receptNavn`= ?,`raavareId` = ? WHERE `receptId` = ?;");
+            PreparedStatement ps = c.prepareStatement("UPDATE `Recept` SET `receptId`= ?,`receptNavn`= ? WHERE `receptId` = ?;");
             ps.setInt(1, recept.getReceptId());
             ps.setString(2, recept.getReceptNavn());
-            ps.setInt(3, recept.getRaavareId());
-            ps.setInt(4, recept.getReceptId());
+            ps.setInt(3, recept.getReceptId());
             ps.executeUpdate();
 
 
