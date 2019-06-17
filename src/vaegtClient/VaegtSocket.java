@@ -60,12 +60,20 @@ public class VaegtSocket {
                 +msg2+ "\" " + "\""
                 +msg3 + "\" ");
 
-            String input2 = null;
-            String input1 = bufferedReader.readLine();
+        String input2 =null ;
+        String input1 = bufferedReader.readLine();
+        System.out.println("1st response from weight : "+input1);
+        while(input1 != null){
             if(input1.contains("RM20 B")){
-                 input2 = bufferedReader.readLine();
+                input2 = bufferedReader.readLine();
+                break;
             }
-            else return "Kommandofejl";
+            else input1 = bufferedReader.readLine();
+        }
+
+
+
+
 
         return input2;
     }
@@ -76,18 +84,26 @@ public class VaegtSocket {
                 +msg2+ "\" " + "\""
                 +msg3 + "\" ");
 
-        String input2 = null;
+        String input2 =null ;
         String input1 = bufferedReader.readLine();
-        if(input1.contains("RM20 B")){
-            input2 = bufferedReader.readLine();
+        System.out.println("1st response from weight : "+input1);
+        while(input1 != null){
+            if(input1.contains("RM20 B")){
+                input2 = bufferedReader.readLine();
+                break;
+            }
+            else input1 = bufferedReader.readLine();
         }
-        else return "Kommandofejl";
+
+
+
+
 
         return input2;
     }
 
     public String readWeight() {
-        output.println("S crlf");
+        output.println("S");
         String returnvalue = null;
         try {
             returnvalue = bufferedReader.readLine();
