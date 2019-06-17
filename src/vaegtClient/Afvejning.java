@@ -6,7 +6,9 @@ public class Afvejning {
         VaegtSocket socket = new VaegtSocket();
         VaegtController controller = new VaegtController();
 
+
         controller.setSocket(socket);
+        controller.initializeWeight();
         controller.start();
     }
 }
