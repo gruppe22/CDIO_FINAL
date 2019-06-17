@@ -2,6 +2,8 @@ package vaegtClient;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VaegtSocket {
     private java.net.Socket socket;
@@ -52,21 +54,36 @@ public class VaegtSocket {
         return returnvalue;
     }
 
-    public String sendAndAwaitReturn(String msg, String msg2, String msg3) {
-        output.println("RM20 8 \""
+    public String sendAndAwaitReturn(String msg, String msg2, String msg3) throws Exception {
+        output.println("RM20 3 \""
                 +msg+ "\" " + "\""
                 +msg2+ "\" " + "\""
                 +msg3 + "\" ");
 
+            String input2 = null;
+            String input1 = bufferedReader.readLine();
+            if(input1.contains("RM20 B")){
+                 input2 = bufferedReader.readLine();
+            }
+            else return "Kommandofejl";
 
-        String returnvalue = null;
-        try {
-            bufferedReader.readLine();
-            returnvalue = bufferedReader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
+        return input2;
+    }
+
+    public String sendAndAwaitIntegerReturn(String msg, String msg2, String msg3) throws Exception {
+        output.println("RM20 3 \""
+                +msg+ "\" " + "\""
+                +msg2+ "\" " + "\""
+                +msg3 + "\" ");
+
+        String input2 = null;
+        String input1 = bufferedReader.readLine();
+        if(input1.contains("RM20 B")){
+            input2 = bufferedReader.readLine();
         }
-        return returnvalue;
+        else return "Kommandofejl";
+
+        return input2;
     }
 
     public String readWeight() {
