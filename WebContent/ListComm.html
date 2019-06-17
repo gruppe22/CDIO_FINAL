@@ -1,0 +1,34 @@
+<h1>Råvareoversigt</h1>
+<div ng-controller="ListCommController">
+    <div>
+        <div class="row">
+            <div class="col-sm">
+                <b>Råvare-ID</b>
+            </div>
+            <div class="col-sm">
+                <b>Navn</b>
+            </div>
+            <div class="col-sm">
+                <b>Leverandør</b>
+            </div>
+            <div class="col-sm">
+            </div>
+        </div>
+    </div>
+    <div class="container" ng-repeat="comm in comms">
+        <div class="row">
+            <div class="col-sm">
+                {{comm.raavareId}}
+            </div>
+            <div class="col-sm">
+                {{comm.raavareNavn}}
+            </div>
+            <div class="col-sm">
+                {{comm.leverandoer}}
+            </div>
+            <div class="col-sm">
+                <a ng-href="#!/EditComm/{{comm.raavareId}}">Rediger</a>
+            </div>
+        </div>
+    </div>
+</div>
