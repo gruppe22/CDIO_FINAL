@@ -5,18 +5,18 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="userId">Bruger-ID</label>
-                <input type="number" class="form-control" id="userId" ng-model="newUser.userId" value="" required>
+                <input type="number" class="form-control" id="userId" ng-model="newUser.oprId" value="" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="cprNumber">CPR-nummer</label>
-                <input type="number" class="form-control" id="cprNumber" ng-model="newUser.cprNumber" value="" required>
+                <input type="text" class="form-control" id="cprNumber" ng-model="newUser.cpr" value="" required>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="userName">Brugernavn</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="userName" ng-model="newUser.userName" required>
+                    <input type="text" class="form-control" id="userName" ng-model="newUser.oprNavn" required>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -30,7 +30,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label for="role">Rolle</label>
-                <select ng-model="newUser.role" ng-options="x for x in roles" id="role" required>
+                <select ng-model="newUser.rolle" ng-options="x for x in roles" id="role" required>
                 </select>
             </div>
         </div>

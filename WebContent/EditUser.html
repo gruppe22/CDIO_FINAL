@@ -5,13 +5,13 @@
             <div class="col-md-6 mb-3">
                 <label for="oldId">ID</label>
                 <div id="oldId">
-                    <h3>{{editedUser.userId}}</h3>
+                    <h3>{{editedUser.oprId}}</h3>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="cpr">CPR-nummer</label>
                 <div id="cpr">
-                    <h3>{{editedUser.cprNumber}}</h3>
+                    <h3>{{editedUser.cpr}}</h3>
                 </div>
             </div>
         </div>
@@ -19,7 +19,7 @@
             <div class="col-md-6 mb-3">
                 <label for="userName">Brugernavn</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="userName" ng-model="editedUser.userName" required>
+                    <input type="text" class="form-control" id="userName" ng-model="editedUser.oprNavn" required>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -29,8 +29,8 @@
                 </div>
             </div>
             <div class="col-md-6 mb-3">
-                <label for="role">Rolle</label>
-                <select ng-model="editedUser.role" ng-options="x for x in roles" id="role" required>
+                <label for="rolle">Rolle</label>
+                <select ng-model="editedUser.rolle" ng-options="x for x in roles" id="rolle" required>
                 </select>
             </div>
         </div>

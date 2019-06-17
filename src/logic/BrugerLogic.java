@@ -14,7 +14,7 @@ public class BrugerLogic {
             if (dto.getOprId() != 0)
                 return dto;
             else
-                return null;
+                throw new Exception("Bruger findes ikke.");
         }
         catch (Exception ex) {
             throw new Exception(ex);

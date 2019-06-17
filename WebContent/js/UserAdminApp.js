@@ -23,35 +23,32 @@
         });
 
     var LogIndController = function($scope) {
-        /*var settings = {
-            "url": "http://localhost:8080/rest/brugere/" + angular.element('#brugerlogininput').val(),
-            "method": "GET",
-            "timeout": 0,
-            "success": function(data) {
-                if (data.rolle == "administrator") {
-                    angular.element('#ajaxchangediv').html('<a class="nav-link" href="#/ListUsers> Id findes. Klik her.</a>')
-                }
-            },
-            "failure" : function() {
-                angular.element('#ajaxchangediv').html('<p color = "red">BrugerId kunne ikke findes.</p>')
-            }
-        };*/
-
         $scope.submitLogIn = function() {
             $.ajax({
                 url: "http://localhost:8080/rest/brugere/" + angular.element('#brugerlogininput').val(),
                 method: "GET",
                 timeout: 0,
-                success: function (data) {
-                    if (data.rolle == "administrator") {
-                        angular.element('#ajaxchangediv').html('<a class="nav-link" href="#/ListUsers"> Id fundet. Klik her</a>');
+                success:
+                    function (data) {
+                    if (data.rolle.toLowerCase() == "administrator") {
+                        angular.element('#ajaxchangediv').html('<a class="nav-link" href="#!ListUsers"> Id fundet. Klik her</a>');
                     }
-                    else if (!data.rolle) {
-                        angular.element('#ajaxchangediv').html('<p style="color : red;"> Indtastet brugerId har ingen rolle, eller kunne ikke findes</p>')
+                    else if (data.rolle.toLowerCase() == "farmaceut") {
+                        angular.element('#ajaxchangediv').html('<a class="nav-link" href="#!ListComm"> Id fundet. Klik her</a>');
+                    }
+                    else if (data.rolle.toLowerCase() == "produktionsleder") {
+                        angular.element('#ajaxchangediv').html('<a class="nav-link" href="#!ListProdBatch">Id fundet. Klik her</a>');
+                    }
+                    else if (data === undefined) {
+                        angular.element('#ajaxchangediv').html('<p style="color : red;"> Indtastet brugerId har ingen rolle, eller kunne ikke findes</p>');
+                    }
+                    else {
+                        angular.element('#ajaxchangediv').html('<p style="color : red;"> Indtastede brugerId har ikke rettigheder til denne applikation. </p>');
                     }
                 },
-                failure : function () {
-                    angular.element('#ajaxchangediv').html('<p style="color : red;"> BrugerId kunne ikke findes. </p>')
+                error : function () {
+                    /*angular.element('#ajaxchangediv').html('<p style="color : red;"> BrugerId kunne ikke findes. </p>')*/
+                    angular.element('#ajaxchangediv').html('<a class= nav-link" href="#!ListUsers"> Test, tryk her. </a>');
 
                 }
             });
@@ -63,7 +60,7 @@
 
     var ListUserController = function($scope) {
         var settings = {
-            "url": "http://localhost:8080/rest/users",
+            "url": "http://localhost:8080/rest/brugere",
             "method": "GET",
             "timeout": 0,
         }
@@ -79,11 +76,11 @@
     var CreateUserController = function ($scope) {
         $scope.error = "";
         $scope.roles = [ "Admin", "Pharmaceut", "Produktionsleder", "Laborant" ];
-        $scope.newUser = { userId: "", cprNumber: "", userName: "", ini: "", role: "" };
+        $scope.newUser = { oprId: "", oprNavn: "", ini: "", cpr: "", rolle: "" };
 
         $scope.submitCreate = function() {
             var settings = {
-                url: "/rest/users",
+                url: "/rest/brugere",
                 method: "POST",
                 data: JSON.stringify($scope.newUser),
                 contentType: "application/json",
@@ -106,7 +103,7 @@
         $scope.error = "";
 
         var settings = {
-            "url": "http://localhost:8080/rest/users/" + $routeParams.userId,
+            "url": "http://localhost:8080/rest/brugere/" + $routeParams.userId,
             "method": "GET",
             "timeout": 0,
         }
@@ -116,12 +113,12 @@
             $scope.$digest();
         });
 
-        $scope.roles = [ "Admin", "Pharmaceut", "Produktionsleder", "Laborant" ];
+        $scope.roles = [ "Admin", "Farmaceut", "Produktionsleder", "Laborant" ];
 
         $scope.submitEdit = function()
         {
             var settings = {
-                url: "/rest/users/",
+                url: "/rest/brugere/",
                 method : "PUT",
                 data: JSON.stringify($scope.editedUser),
                 contentType: "application/json",

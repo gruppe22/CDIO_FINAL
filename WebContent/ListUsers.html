@@ -18,16 +18,16 @@
     <div class="container" ng-repeat="user in users">
         <div class="row">
             <div class="col-sm">
-                {{user.userId}}
+                {{user.oprId}}
             </div>
             <div class="col-sm">
-                {{user.userName}}
+                {{user.oprNavn}}
             </div>
             <div class="col-sm">
                 {{user.ini}}
             </div>
             <div class="col-sm">
-                <a ng-href="#!/EditUser/{{user.userId}}">Rediger</a>
+                <a ng-href="#!/EditUser/{{user.oprId}}">Rediger</a>
             </div>
         </div>
     </div>
