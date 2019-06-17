@@ -23,8 +23,7 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
                 pb.setPbId(rs.getInt("pbId"));
                 pb.setReceptId(rs.getInt("receptId"));
                 pb.setStatus(rs.getInt("status"));
-                pb.setBrugerId(rs.getInt("brugerId"));
-                pb.setRbId(rs.getInt("rbId"));
+
             }
             rs.close();
             return pb;
@@ -42,19 +41,18 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
             ResultSet rs = statement.executeQuery("SELECT * FROM `ProduktBatch`");
 
             while (rs.next()) {
-                // Setting up a New User DTO
+                // Setting up a New pb DTO
                 ProduktBatchDTO pb = new ProduktBatchDTO();
 
                 // All parameters
                 pb.setPbId(rs.getInt("pbId"));
                 pb.setReceptId(rs.getInt("receptId"));
                 pb.setStatus(rs.getInt("status"));
-                pb.setBrugerId(rs.getInt("brugerId"));
-                pb.setRbId(rs.getInt("rbId"));
 
 
 
-                // Add user to list
+
+                // Add pb to list
                 pbList.add(pb);
             }
 
@@ -68,12 +66,10 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
     @Override
     public void createProduktBatch(ProduktBatchDTO pb) throws DALException {
         try (Connection c = connection.createConnection()){
-            PreparedStatement ps = c.prepareStatement("insert into ProduktBatch values (?,?,?,?,?)");
+            PreparedStatement ps = c.prepareStatement("insert into ProduktBatch values (?,?,?)");
             ps.setInt(1, pb.getPbId());
             ps.setInt(2, pb.getReceptId());
             ps.setInt(3, pb.getStatus());
-            ps.setInt(4, pb.getRbId());
-            ps.setInt(5, pb.getStatus());
             ps.execute();
 
         } catch (SQLException | ConnectionManager.DALException ex){
@@ -84,13 +80,11 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
     @Override
     public void updateProduktBatch(ProduktBatchDTO pb) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("UPDATE `Produktbatch` SET `pbId`= ?,`receptId`= ?,`status` = ?, `brugerId` =?, `rbId`=? WHERE `pbId` = ?;");
+            PreparedStatement ps = c.prepareStatement("UPDATE `Produktbatch` SET `pbId`= ?,`receptId`= ?,`status` = ? WHERE `pbId` = ?;");
             ps.setInt(1, pb.getPbId());
             ps.setInt(2, pb.getReceptId());
             ps.setInt(3, pb.getStatus());
-            ps.setInt(4, pb.getBrugerId());
-            ps.setInt(5, pb.getRbId());
-            ps.setInt(6, pb.getPbId());
+            ps.setInt(4, pb.getPbId());
             ps.executeUpdate();
 
         } catch (SQLException | ConnectionManager.DALException ex){
