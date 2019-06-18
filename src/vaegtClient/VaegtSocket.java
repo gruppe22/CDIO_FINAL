@@ -71,10 +71,6 @@ public class VaegtSocket {
             else input1 = bufferedReader.readLine();
         }
 
-
-
-
-
         return input2;
     }
 
