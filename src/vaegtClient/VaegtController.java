@@ -1,13 +1,10 @@
 package vaegtClient;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import dto.BrugerDTO;
 import dto.ProduktBatchDTO;
 import dto.ReceptDTO;
 import logic.BrugerLogic;
 import logic.VaegtLogic;
-
-import java.util.List;
 
 public class VaegtController {
     private VaegtSocket socket;
@@ -28,10 +25,10 @@ public class VaegtController {
         return netWeight;
     }
 
-    public double getBruttoWeight(double net, String bruttoWeightResult) {
+  /*  public double getBruttoWeight(double net, String bruttoWeightResult) {
         double bruttoWeight = net + Double.parseDouble(SubStringGenerator(bruttoWeightResult, "S", " ", 9));
         return bruttoWeight;
-    }
+    }*/
 
     private String SubStringGenerator(String source, String s, String e, int offset) {
         int opening = source.indexOf(s) + offset;
@@ -56,12 +53,12 @@ public class VaegtController {
     public void start() throws Exception {
         //String material;
         double netWeight;
-        double bruttoWeight;
+       // double bruttoWeight;
 
         /*
          * Get operator from weight
          */
-        String input = socket.sendAndAwaitIntegerReturn("Indtast op. nummer", " ", " ");
+        String input = socket.sendAndAwaitIntegerReturn("Indtast opr.id", "", "");
 
             BrugerDTO user = null;
             String operatorNumber = null;
@@ -89,6 +86,7 @@ public class VaegtController {
             input = socket.sendAndAwaitIntegerReturn("Indtast pb: ","","");
             int batchId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
             ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
+
             System.out.println(batchId);
             System.out.println(productBatch.toString());
 
@@ -102,39 +100,58 @@ public class VaegtController {
             /*
              * Vejning startes
              */
-            input = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)","" ,"");
-                if (SubStringGenerator(input, "\"","\"", 1).equals("1")){
 
         //TODO: Lav pkt 8 : produktbatch nummeret sættes til "under produktion"
 
-                input = socket.tareWeight();
+                // raavarebatch registreres
+                while (true) {
+                    input = socket.sendAndAwaitIntegerReturn("Indtast rbId", "", "");
+                    int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
 
-                //TODO: denne vægt skal gemmes - produktKompBatchDTO
+                    System.out.println(rbId);
 
-                input = socket.sendAndAwaitReturn("Stil beholder" , "", "");
-                double taraweight = Double.parseDouble(SubStringGenerator(socket.readWeight(), "S", " ", 9));
+                    input = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)","" ,"");
+                        if (SubStringGenerator(input, "\"","\"", 1).equals("1")){
 
-                //TODO: denne vægt skal gemmes hvor?
+                        //TODO: skal gemmes i produktKompBatchDTO
 
-                input = socket.tareWeight();
+                        //vaegten tareres
+                        socket.tareWeight();
 
-                socket.sendAndAwaitReturn("Placer netto på vaegten", " ", " ");
-            netWeight = getNetWeight(socket.readWeight());
-            socket.tareWeight();
-            socket.sendAndAwaitReturn("Fjern venligst brutto fra vaegten"," ", "");
-            bruttoWeight = getBruttoWeight(netWeight, socket.readWeight());
-            input = socket.sendAndAwaitReturn("OK (1) eller Kasseret (2) ?", " " , " ");
+                        //beholderens vægt registreres
+                        input = socket.sendAndAwaitReturn("Stil beholder", "", "");
+                        double taraweight = Double.parseDouble(SubStringGenerator(socket.readWeight(), "S", " ", 9));
 
-            if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
-                // save
+                        System.out.println(taraweight);
+
+                    //TODO: denne vægt skal gemmes - produktKompBatchDTO
+                        input = socket.tareWeight();
+
+                        // raavare afvejes og registreres
+                        socket.sendAndAwaitReturn("Lav afvejning.", "", "");
+                        netWeight = getNetWeight(socket.readWeight());
+
+                        System.out.println(netWeight);
+
+                        input = socket.sendAndAwaitReturn("OK (1) eller Kasseret (2) ?", "", "");
+                            if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
+
+                        //TODO: denne vægt skal gemmes - produktKompBatchDTO
+
+                                input = socket.sendAndAwaitReturn("Flere rb? (1:Y,2:N)", "", "");
+                                if (SubStringGenerator(input, "\"", "\"", 1).equals("2")) {
+                                    break;
+                                }
+                            }
+                    // TODO: opdater lagerstatus?
+                        }
+                }
             }
             else {
-                start();
+            start();
             }
-        }
-        else {
+        } else {
             start();
         }
-        } else start();
     }
-    }}
+}
