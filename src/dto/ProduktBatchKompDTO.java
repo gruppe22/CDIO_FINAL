@@ -23,6 +23,8 @@ public class ProduktBatchKompDTO
         this.oprId = oprId;
     }
 
+    public ProduktBatchKompDTO() {};
+
     public int getPbId() {
         return pbId;
     }

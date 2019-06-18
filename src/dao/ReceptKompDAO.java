@@ -59,6 +59,16 @@ public class ReceptKompDAO implements IReceptKompDAO {
 
     @Override
     public void updateReceptKomp(ReceptKompDTO komponent) throws DALException {
+        try (Connection c = connection.createConnection()) {
+            PreparedStatement ps = c.prepareStatement("UPDATE Recept_has_Raaavare SET receptId = ?,raavareId = ?, nomNetto = ?, tolerance = ? WHERE receptId = ?;");
+            ps.setInt(1, komponent.getReceptId());
+            ps.setInt(2, komponent.getRaavareId());
+            ps.setDouble(3, komponent.getNomNetto());
+            ps.setDouble(4, komponent.getTolerance());
+            ps.executeUpdate();
 
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new IReceptKompDAO.DALException("Database fejl");
+        }
     }
 }
