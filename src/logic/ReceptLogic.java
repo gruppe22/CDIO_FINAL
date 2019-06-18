@@ -1,15 +1,19 @@
 package logic;
 
 import dao.ReceptDAO;
+import dao.ReceptKompDAO;
 import dto.ReceptDTO;
+import dto.ReceptKompDTO;
+
 import java.util.List;
 
 public class ReceptLogic {
-    private ReceptDAO dao = new ReceptDAO();
+    private ReceptDAO receptDAO = new ReceptDAO();
+    private ReceptKompDAO kompDAO = new ReceptKompDAO();
 
     public ReceptDTO getRecept(int id) throws Exception {
         try {
-            ReceptDTO dto = dao.getRecept(id);
+            ReceptDTO dto = receptDAO.getRecept(id);
             if (dto.getReceptId() != 0)
                 return dto;
             else
@@ -22,7 +26,7 @@ public class ReceptLogic {
 
     public List<ReceptDTO> getReceptList() throws Exception {
         try {
-            return dao.getReceptList();
+            return receptDAO.getReceptList();
         }
         catch (Exception ex) {
             throw new Exception(ex);
@@ -35,8 +39,18 @@ public class ReceptLogic {
             throw new Exception("Felterne må ikke være tomme");
 
         try {
-            dao.createRecept(recept);
+            receptDAO.createRecept(recept);
             return recept;
+        }
+        catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+
+    public ReceptKompDTO createReceptKomp(ReceptKompDTO receptKomp) throws Exception {
+        try {
+            kompDAO.createReceptKomp(receptKomp);
+            return receptKomp;
         }
         catch (Exception ex) {
             throw new Exception(ex);
