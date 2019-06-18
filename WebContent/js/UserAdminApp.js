@@ -80,7 +80,7 @@
                         angular.element('.pleder').css({'display' : 'inherit'});
                         location.href = '#!ListUsers';
                     }
-                    else if (data.rolle.toLowerCase() == "farmaceut") {
+                    else if (data.rolle.toLowerCase() == "pharmaceut") {
                         angular.element('.farmaceut').css({'display' : 'inherit'});
                         angular.element('.pleder').css({'display' : 'inherit'});
                         location.href = '#!ListComm';
@@ -125,7 +125,7 @@
 
     var CreateUserController = function ($scope) {
         $scope.error = "";
-        $scope.roles = [ "Admin", "Pharmaceut", "Produktionsleder", "Laborant" ];
+        $scope.roles = [ "Administrator", "Pharmaceut", "Produktionsleder", "Laborant" ];
         $scope.newUser = { oprId: "", oprNavn: "", ini: "", cpr: "", rolle: "" };
 
         $scope.submitCreate = function() {
@@ -163,7 +163,7 @@
             $scope.$digest();
         });
 
-        $scope.roles = [ "Admin", "Farmaceut", "Produktionsleder", "Laborant" ];
+        $scope.roles = [ "Administrator", "Pharmaceut", "Produktionsleder", "Laborant" ];
 
         $scope.submitEdit = function()
         {
