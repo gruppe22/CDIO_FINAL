@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>Brugeradministration</title>
 	<script src="js/jquery-3.1.1.js"></script>
 	<script src="js/jquery.serialize-object.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
 	<script src="js/angular.min.js"></script>
 	<script src="js/angular-route.js"></script>
 	<script type="text/javascript" src="js/UserAdminApp.js"></script>
@@ -34,7 +35,7 @@
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-	<a class="navbar-brand" href="#">Brugeradministration</a>
+	<a class="navbar-brand"  onclick="HideElements();" href="#">Brugeradministration</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -42,34 +43,34 @@
 	<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item">
-				<a class="nav-link" href="#!ListUsers">Brugeroversigt</a>
+				<a class="nav-link admindiv" href="#!ListUsers" style = "display : none;">Brugeroversigt</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#!CreateUser">Opret bruger</a>
+				<a class="nav-link admindiv" href="#!CreateUser" style = "display : none;">Opret bruger</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#!ListComm">Vis Råvarer</a>
+				<a class="nav-link farmaceut" href="#!ListComm" style = "display : none;">Vis Råvarer</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#!CreateComm">Opret Råvarer</a>
+				<a class="nav-link farmaceut" href="#!CreateComm" style = "display : none;">Opret Råvarer</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#!ListRecepts">Vis Recepter</a>
+				<a class="nav-link farmaceut" href="#!ListRecepts" style = "display : none;">Vis Recepter</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#!CreateRecept">Opret Recept</a>
+				<a class="nav-link farmaceut" href="#!CreateRecept" style = "display : none;">Opret Recept</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#!ListProducts">Vis Produktbatches</a>
+				<a class="nav-link pleder" href="#!ListProducts" style = "display : none;">Vis Produktbatches</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#!CreateProduct">Opret Produktbatch</a>
+				<a class="nav-link pleder" href="#!CreateProduct" style = "display : none;">Opret Produktbatch</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#!ListCB">Vis Råvarebatches</a>
+				<a class="nav-link pleder" href="#!ListCB" style = "display : none;">Vis Råvarebatches</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#!CreateCB">Opret Råvarebatch</a>
+				<a class="nav-link pleder" href="#!CreateCB" style = "display : none;">Opret Råvarebatch</a>
 			</li>
 		</ul>
 	</div>

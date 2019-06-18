@@ -11,6 +11,9 @@ public class ReceptKompDTO
     /** tolerance i området 0,1 - 10,0 % */
     double tolerance;
 
+    public ReceptKompDTO(){
+    }
+
     public ReceptKompDTO(int receptId, int raavareId, double nomNetto, double tolerance) {
         this.receptId = receptId;
         this.raavareId = raavareId;
