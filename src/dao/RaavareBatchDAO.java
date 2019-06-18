@@ -14,7 +14,7 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
     public RaavareBatchDTO getRaavareBatch ( int rbId) throws DALException {
         try (Connection c = connection.createConnection()) {
             RaavareBatchDTO rb = new RaavareBatchDTO();
-            PreparedStatement ps = c.prepareStatement("SELECT * FROM RaavareBatch WHERE rbId =?");
+            PreparedStatement ps = c.prepareStatement("SELECT * FROM RaavareBatch WHERE rbId = ?");
             ps.setInt(1,rbId);
             ResultSet rs = ps.executeQuery();
 
@@ -36,7 +36,7 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
             List<RaavareBatchDTO> rbList = new ArrayList<>();
 
             Statement statement = c.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM `RaavareBatch`");
+            ResultSet rs = statement.executeQuery("SELECT * FROM RaavareBatch");
 
             while (rs.next()) {
                 // Setting up a New User DTO
@@ -65,7 +65,7 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
         try (Connection c = connection.createConnection()) {
             List<RaavareBatchDTO> rbList = new ArrayList<>();
 
-            PreparedStatement ps = c.prepareStatement("SELECT * FROM `RaavareBatch` WHERE `raavareId` =?");
+            PreparedStatement ps = c.prepareStatement("SELECT * FROM RaavareBatch WHERE raavareId =?");
             ps.setInt(1, raavareId);
             ResultSet rs = ps.executeQuery();
 
@@ -92,7 +92,7 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
     @Override
     public void createRaavareBatch (RaavareBatchDTO raavarebatch) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("insert into RaavareBatch values (?,?,?)");
+            PreparedStatement ps = c.prepareStatement("INSERT INTO RaavareBatch VALUES (?,?,?)");
             ps.setInt(1, raavarebatch.getRbId());
             ps.setInt(2, raavarebatch.getRaavareId());
             ps.setDouble(3, raavarebatch.getMaengde());
@@ -106,7 +106,7 @@ public class RaavareBatchDAO implements IRaavareBatchDAO {
     @Override
     public void updateRaavareBatch (RaavareBatchDTO raavarebatch) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("UPDATE `RaavareBatch` SET `rbId`= ?,`RaavareId`= ?,`maengde` = ? WHERE `rbId` = ?;");
+            PreparedStatement ps = c.prepareStatement("UPDATE RaavareBatch SET rbId = ?, RaavareId = ?, maengde = ? WHERE rbId = ?;");
             ps.setInt(1, raavarebatch.getRbId());
             ps.setInt(2, raavarebatch.getRaavareId());
             ps.setDouble(3, raavarebatch.getMaengde());

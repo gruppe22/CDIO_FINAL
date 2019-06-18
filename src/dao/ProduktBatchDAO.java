@@ -38,7 +38,7 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
             List<ProduktBatchDTO> pbList = new ArrayList<>();
 
             Statement statement = c.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM `ProduktBatch`");
+            ResultSet rs = statement.executeQuery("SELECT * FROM ProduktBatch");
 
             while (rs.next()) {
                 // Setting up a New pb DTO
@@ -66,7 +66,7 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
     @Override
     public void createProduktBatch(ProduktBatchDTO pb) throws DALException {
         try (Connection c = connection.createConnection()){
-            PreparedStatement ps = c.prepareStatement("insert into ProduktBatch values (?,?,?)");
+            PreparedStatement ps = c.prepareStatement("INSERT INTO ProduktBatch VALUES (?,?,?)");
             ps.setInt(1, pb.getPbId());
             ps.setInt(2, pb.getReceptId());
             ps.setInt(3, pb.getStatus());
@@ -80,7 +80,7 @@ public class ProduktBatchDAO implements IProduktBatchDAO {
     @Override
     public void updateProduktBatch(ProduktBatchDTO pb) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("UPDATE `Produktbatch` SET `pbId`= ?,`receptId`= ?,`status` = ? WHERE `pbId` = ?;");
+            PreparedStatement ps = c.prepareStatement("UPDATE Produktbatch SET pbId = ?,receptId = ?,status = ? WHERE pbId = ?;");
             ps.setInt(1, pb.getPbId());
             ps.setInt(2, pb.getReceptId());
             ps.setInt(3, pb.getStatus());

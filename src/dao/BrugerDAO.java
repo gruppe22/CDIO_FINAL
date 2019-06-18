@@ -24,6 +24,7 @@ public class BrugerDAO implements IBrugerDAO {
                 user.setOprNavn(rs.getString("brugerNavn"));
                 user.setCpr(rs.getString("cpr"));
                 user.setRolle(rs.getString("rolle"));
+                user.setStatus(rs.getBoolean("status"));
             }
             rs.close();
             return user;
@@ -38,20 +39,19 @@ public class BrugerDAO implements IBrugerDAO {
             List<BrugerDTO> userList = new ArrayList<>();
 
             Statement statement = c.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM `Bruger`");
+            ResultSet rs = statement.executeQuery("SELECT * FROM Bruger");
 
-            while (resultSet.next()) {
+            while (rs.next()) {
                 // Setting up a New User DTO
                 BrugerDTO bruger = new BrugerDTO();
 
                 // All parameters
-                bruger.setOprId(resultSet.getInt("brugerId"));
-                bruger.setOprNavn(resultSet.getString("brugerNavn"));
-                bruger.setIni(resultSet.getString("ini"));
-                bruger.setCpr(resultSet.getString("cpr"));
-                bruger.setRolle(resultSet.getString("rolle"));
-
-
+                bruger.setOprId(rs.getInt("brugerId"));
+                bruger.setOprNavn(rs.getString("brugerNavn"));
+                bruger.setIni(rs.getString("ini"));
+                bruger.setCpr(rs.getString("cpr"));
+                bruger.setRolle(rs.getString("rolle"));
+                bruger.setStatus(rs.getBoolean("status"));
 
                 // Add user to list
                 userList.add(bruger);
@@ -66,12 +66,13 @@ public class BrugerDAO implements IBrugerDAO {
     @Override
     public void createBruger(BrugerDTO opr) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("insert into Bruger values (?,?,?,?,?)");
+            PreparedStatement ps = c.prepareStatement("INSERT INTO Bruger VALUES (?,?,?,?,?,?)");
             ps.setInt(1, opr.getOprId());
             ps.setString(2, opr.getOprNavn());
             ps.setString(3, opr.getIni());
             ps.setString(4, opr.getCpr());
             ps.setString(5, opr.getRolle());
+            ps.setBoolean(6,opr.isStatus());
             ps.execute();
 
         } catch (SQLException | ConnectionManager.DALException ex){
@@ -82,7 +83,7 @@ public class BrugerDAO implements IBrugerDAO {
     @Override
     public void updateBruger(BrugerDTO opr) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("UPDATE `Bruger` SET `brugerId`= ?,`brugerNavn`= ?,`ini` = ?, `cpr` =? , `rolle` =? WHERE `brugerId` = ?;");
+            PreparedStatement ps = c.prepareStatement("UPDATE Bruger SET brugerId = ?,brugerNavn = ?,ini = ?, cpr = ? , rolle = ?, status = ?, WHERE brugerId = ?;");
             ps.setInt(1, opr.getOprId());
             ps.setString(2, opr.getOprNavn());
             ps.setString(3, opr.getIni());
@@ -101,7 +102,7 @@ public class BrugerDAO implements IBrugerDAO {
     public void deleteBruger(BrugerDTO opr) throws DALException {
         try (Connection c = connection.createConnection()) {
 
-            PreparedStatement ps = c.prepareStatement("DELETE FROM `Bruger` WHERE `brugerId` = ?");
+            PreparedStatement ps = c.prepareStatement("DELETE FROM Bruger WHERE brugerId = ?");
             ps.setInt(1, opr.getOprId());
             ps.executeUpdate();
 
