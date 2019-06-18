@@ -341,4 +341,31 @@
     }
     ListCBController.$inject = ['$scope'];
     userAdminApp.controller('ListCBController', ListCBController);
+
+    var CreateCBController = function ($scope) {
+        $scope.error = "";
+        $scope.newCB = {rbId: "", raavareId: "", maengde: ""};
+
+
+        $scope.submitCB = function () {
+            var settings = {
+                url: "rest/raavarebatch/",
+                method: "POST",
+                data: JSON.stringify($scope.newCB),
+                contentType: "application/json",
+                success: function () {
+                    location.href="#!ListCB"
+                },
+                error: function (data) {
+                    $scope.error = data.responseText;
+                    $scope.$digest()
+                }
+            };
+
+            $.ajax(settings)
+        };
+    }
+
+    CreateCBController.$inject = ['$scope'];
+    userAdminApp.controller("CreateCBController", CreateCBController);
 })();
