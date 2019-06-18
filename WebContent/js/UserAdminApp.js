@@ -31,6 +31,38 @@
                 .when("/EditComm/:raavareId", {
                     templateUrl : "EditComm.html",
                     controller : "EditCommController"
+                })
+                .when("/ListRecepts", {
+                    templateUrl : "ListRecepts.html",
+                    controller : "ListReceptsController"
+                })
+                .when("ShowRecept/:receptId", {
+                    templateUrl : "ShowRecept.html",
+                    controller : "ShowReceptController"
+                })
+                .when("/CreateRecept", {
+                    templateUrl : "CreateRecept.html",
+                    controller : "CreateReceptController"
+                })
+                .when("/ListProducts", {
+                    templateUrl : "ListProducts.html",
+                    controller : "ListProductsController"
+                })
+                .when("/ShowProduct/:pbId", {
+                    templateUrl : "ShowProduct.html",
+                    controller : "ShowProductController"
+                })
+                .when("/CreateProduct", {
+                    templateUrl : "CreateProduct.html",
+                    controller : "CreateProductController"
+                })
+                .when("/ListCB", {
+                    templateUrl : "ListCB.html",
+                    controller : "ListCBController"
+                })
+                .when("/CreateCB", {
+                    templateUrl : "CreateCB.html",
+                    controller : "CreateCBController"
                 });
         });
 
@@ -222,4 +254,20 @@
     }
     EditCommController.$inject = ['$scope', '$routeParams'];
     userAdminApp.controller('EditCommController', EditCommController);
+
+    var ListReceptsController = function($scope) {
+        var settings = {
+            url: "/rest/recept/",
+            method: "GET",
+            timeout: 0
+        };
+
+        $.ajax(settings).done(function (response) {
+            $scope.recepts = response;
+            $scope.$digest();
+
+        })
+    }
+    ListReceptsController.$inject = ['$scope'];
+    userAdminApp.controller('ListReceptsController', ListReceptsController);
 })();

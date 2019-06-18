@@ -1,7 +1,5 @@
 #log-in-wrapper {
-    position: absolute;
-    left: 50%;
-    right: 50%;
+    margin: auto;
     width: fit-content;
 }
 
