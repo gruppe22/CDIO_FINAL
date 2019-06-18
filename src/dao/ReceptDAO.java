@@ -14,7 +14,7 @@ public class ReceptDAO implements IReceptDAO {
     public ReceptDTO getRecept ( int receptId) throws DALException {
         try (Connection c = connection.createConnection()) {
             ReceptDTO recept = new ReceptDTO();
-            PreparedStatement ps = c.prepareStatement("SELECT * FROM Recept WHERE receptId =?");
+            PreparedStatement ps = c.prepareStatement("SELECT * FROM Recept WHERE receptId = ?");
             ps.setInt(1,receptId);
             ResultSet rs = ps.executeQuery();
 
@@ -58,11 +58,10 @@ public class ReceptDAO implements IReceptDAO {
     @Override
     public void createRecept (ReceptDTO recept) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("insert into Recept values (?,?)");
+            PreparedStatement ps = c.prepareStatement("INSERT INTO Recept VALUES (?,?)");
             ps.setInt(1, recept.getReceptId());
             ps.setString(2, recept.getReceptNavn());
             ps.execute();
-            c.close();
 
         } catch (SQLException | ConnectionManager.DALException ex){
             throw new DALException("Database fejl");
@@ -72,12 +71,11 @@ public class ReceptDAO implements IReceptDAO {
     @Override
     public void updateRecept (ReceptDTO recept) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("UPDATE `Recept` SET `receptId`= ?,`receptNavn`= ? WHERE `receptId` = ?;");
+            PreparedStatement ps = c.prepareStatement("UPDATE Recept SET receptId = ?, receptNavn = ? WHERE receptId = ?;");
             ps.setInt(1, recept.getReceptId());
             ps.setString(2, recept.getReceptNavn());
             ps.setInt(3, recept.getReceptId());
             ps.executeUpdate();
-
 
         } catch (SQLException | ConnectionManager.DALException ex){
             throw new DALException("Database fejl");

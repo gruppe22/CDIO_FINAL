@@ -45,7 +45,7 @@ public class ReceptKompDAO implements IReceptKompDAO {
     @Override
     public void createReceptKomp(ReceptKompDTO komponent) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("insert into Recept_has_Raavare values (?,?,?,?)");
+            PreparedStatement ps = c.prepareStatement("INSERT INTO Recept_has_Raavare VALUES (?,?,?,?)");
             ps.setInt(1, komponent.getReceptId());
             ps.setInt(2, komponent.getRaavareId());
             ps.setDouble(3, komponent.getNomNetto());

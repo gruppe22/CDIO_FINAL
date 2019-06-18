@@ -14,7 +14,7 @@ public class RaavareDAO implements IRaavareDAO {
     public RaavareDTO getRaavare(int raavareId) throws DALException {
         try (Connection c = connection.createConnection()) {
             RaavareDTO raavare = new RaavareDTO();
-            PreparedStatement ps = c.prepareStatement("SELECT * FROM Raavare WHERE raavareId =?");
+            PreparedStatement ps = c.prepareStatement("SELECT * FROM Raavare WHERE raavareId = ?");
             ps.setInt(1,raavareId);
             ResultSet rs = ps.executeQuery();
 
@@ -36,7 +36,7 @@ public class RaavareDAO implements IRaavareDAO {
             List<RaavareDTO> raavareList = new ArrayList<>();
 
             Statement statement = c.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM `Raavare`");
+            ResultSet rs = statement.executeQuery("SELECT * FROM Raavare");
 
             while (rs.next()) {
                 // Setting up a New User DTO
@@ -61,7 +61,7 @@ public class RaavareDAO implements IRaavareDAO {
     @Override
     public void createRaavare(RaavareDTO raavare) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("insert into Raavare values (?,?,?)");
+            PreparedStatement ps = c.prepareStatement("INSERT INTO Raavare VALUES (?,?,?)");
             ps.setInt(1, raavare.getRaavareId());
             ps.setString(2, raavare.getRaavareNavn());
             ps.setString(3, raavare.getLeverandoer());
@@ -75,7 +75,7 @@ public class RaavareDAO implements IRaavareDAO {
     @Override
     public void updateRaavare(RaavareDTO raavare) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("UPDATE `Raavare` SET `raavareId`= ?,`raavareNavn`= ?,`leverandoer`= ? WHERE `raavareId` = ?;");
+            PreparedStatement ps = c.prepareStatement("UPDATE Raavare SET raavareId = ?, raavareNavn = ?, leverandoer = ? WHERE raavareId = ?;");
             ps.setInt(1, raavare.getRaavareId());
             ps.setString(2, raavare.getRaavareNavn());
             ps.setString(3,raavare.getLeverandoer());
