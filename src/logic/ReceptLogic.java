@@ -56,4 +56,13 @@ public class ReceptLogic {
             throw new Exception(ex);
         }
     }
+
+    public List<ReceptKompDTO> getReceptKompList(int id) throws Exception {
+        try {
+            return kompDAO.getReceptKompList(id);
+        }
+        catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
 }

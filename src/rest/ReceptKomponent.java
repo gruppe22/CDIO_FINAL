@@ -9,32 +9,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("recept")
+@Path("receptkomponent")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class Recept {
+public class ReceptKomponent {
     ReceptLogic receptLogic = new ReceptLogic();
 
     @GET
     @Path("{id}")
-    public Response getRecept(@PathParam("id") int id) {
+    public Response getReceptKomptList(@PathParam("id") int id) {
         try {
-            ReceptDTO recept = receptLogic.getRecept(id);
-            return Response.status(200)
-                    .type(MediaType.APPLICATION_JSON_TYPE)
-                    .entity(recept)
-                    .build();
-        } catch (Exception ex) {
-            return Response.status(400)
-                    .type(MediaType.TEXT_PLAIN)
-                    .build();
-        }
-    }
-
-    @GET
-    public Response getReceptList() {
-        try {
-            List<ReceptDTO> list = receptLogic.getReceptList();
+            List<ReceptKompDTO> list = receptLogic.getReceptKompList(id);
             return Response.status(200)
                     .type(MediaType.APPLICATION_JSON_TYPE)
                     .entity(list)
@@ -47,15 +32,17 @@ public class Recept {
     }
 
     @POST
-    public Response createRecept(String body) {
+    public Response createReceptKomp(String body) {
         JSONObject json = new JSONObject(body);
 
         try {
-            ReceptDTO dto = new ReceptDTO(
+            ReceptKompDTO dto = new ReceptKompDTO(
                     json.getInt("receptId"),
-                    json.getString("receptNavn")
+                    json.getInt("raavareId"),
+                    json.getDouble("nomNetto"),
+                    json.getDouble("tolerance")
             );
-            receptLogic.createRecept(dto);
+            receptLogic.createReceptKomp(dto);
             return Response.status(200)
                     .type(MediaType.APPLICATION_JSON_TYPE)
                     .entity(dto)
