@@ -368,4 +368,47 @@
 
     CreateCBController.$inject = ['$scope'];
     userAdminApp.controller("CreateCBController", CreateCBController);
+
+    var ListProductsController = function($scope) {
+        var settings = {
+            url: "/rest/produktbatch/",
+            method: "GET",
+            timeout: 0
+        };
+
+        $.ajax(settings).done(function (response) {
+            $scope.recepts = response;
+            $scope.$digest();
+
+        })
+    }
+    ListProductsController.$inject = ['$scope'];
+    userAdminApp.controller('ListProductsController', ListProductsController);
+
+    var CreateProductController = function ($scope) {
+        $scope.error = "";
+        $scope.newProduct = {pbId: "", receptId: "", status: 0};
+
+
+        $scope.submitProduct = function () {
+            var settings = {
+                url: "rest/produktbatch/",
+                method: "POST",
+                data: JSON.stringify($scope.newProduct),
+                contentType: "application/json",
+                success: function () {
+                    location.href="#!ListProducts"
+                },
+                error: function (data) {
+                    $scope.error = data.responseText;
+                    $scope.$digest()
+                }
+            };
+
+            $.ajax(settings)
+        };
+    }
+
+    CreateProductController.$inject = ['$scope'];
+    userAdminApp.controller("CreateProductController", CreateProductController);
 })();
