@@ -276,4 +276,56 @@
     }
     ListReceptsController.$inject = ['$scope'];
     userAdminApp.controller('ListReceptsController', ListReceptsController);
+
+    var ShowReceptController = function($scope, $routeparams) {
+        var settings = {
+            url: "/rest/recept/komponent/" + $routeparams.receptId,
+            method: "GET",
+            timout: 0
+        };
+
+        $.ajax(settings).done(function (response) {
+            $scope.fetchedReceptKomponent = response;
+            $scope.$digest;
+        })
+
+        var settings2 = {
+            "url" : "http://localhost:8080/rest/raavare",
+            "method" : "GET",
+            "timeout" : 0,
+        }
+
+        $.ajax(settings2).done(function (response) {
+            $scope.comms = response;
+            $scope.$digest;
+        })
+
+        $scope.newComms = [];
+        for(i = 0; i++; i < $scope.comms) {
+            if($scope.comms[i].raavareId == $scope.fetchedReceptKomponent.raavareId) {
+                $scope.newComms.push($scope.comms[i]);
+            }
+        }
+    }
+
+    ShowReceptController.$inject = ['$scope'];
+    userAdminApp.controller('ShowReceptController', ShowReceptController);
+
+    var ListCBController = function($scope) {
+        var settings = {
+            url: "/rest/raavarebatch/",
+            method: "GET",
+            timeout: 0
+        };
+
+        $.ajax(settings).done(function (response) {
+            $scope.recepts = response;
+            $scope.$digest();
+
+        })
+
+        console.log($scope.recepts);
+    }
+    ListCBController.$inject = ['$scope'];
+    userAdminApp.controller('ListCBController', ListCBController);
 })();
