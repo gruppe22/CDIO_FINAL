@@ -20,6 +20,7 @@ public class ReceptKompDAO implements IReceptKompDAO {
             List<ReceptKompDTO> receptList = new ArrayList<>();
 
             PreparedStatement ps = c.prepareStatement("SELECT * FROM Recept_has_Raavare WHERE Recept_receptId = ?");
+            ps.setInt(1, receptId);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
