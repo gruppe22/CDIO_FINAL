@@ -1,0 +1,18 @@
+<h1>Opret recept trin 1/2</h1>
+
+<div class="col-md-8 order-md-1" ng-controller="CreateReceptController">
+    <form class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="receptId">ReceptId ID</label>
+                <input type="number" class="form-control" id="receptId" ng-model="newRecept.receptId" value="" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="receptNavn">Recept Navn</label>
+                <input type="text" class="form-control" id="receptNavn" ng-model="newRecept.receptNavn" value="" required>
+            </div>
+        </div>
+        <button id="submit" class="btn btn-primary btn-lg btn-block" ng-click="submitRecept()" type="submit">Næste Trin</button>
+    </form>
+    {{error}}
+</div>
