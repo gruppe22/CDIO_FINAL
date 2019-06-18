@@ -10,6 +10,5 @@ public class Afvejning {
         controller.setSocket(socket);
         controller.initializeWeight();
         controller.start();
-        controller.closeConnection();
     }
 }
