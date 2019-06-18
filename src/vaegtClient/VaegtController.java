@@ -79,16 +79,17 @@ public class VaegtController {
          * Approve operator
          */
         System.out.println(user.getOprNavn());
-        input = socket.sendAndAwaitIntegerReturn(user.getOprNavn()+"Er dette dit navn?","" ,"");
-        if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
+        input = socket.sendAndAwaitIntegerReturn(user.getOprNavn()+"?" + "(1:Y, 2:N)","" ,"");
+        if (SubStringGenerator(input, "\"","\"", 1).equals("1")) {
 
             /*
              * Get product-batch number from weight
              */
-            input = socket.sendAndAwaitIntegerReturn("Indtast produkt-batch-nummer: ","","");
+            input = socket.sendAndAwaitIntegerReturn("Indtast pb: ","","");
             int batchId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
             ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
             System.out.println(batchId);
+            System.out.println(productBatch.toString());
             //ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
             //socket.sendAndAwaitReturn("Recept: " + recept.getReceptNavn());
 

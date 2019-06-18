@@ -67,4 +67,29 @@ public class Recept {
                     .build();
         }
     }
+
+    @POST
+    @Path("komponent")
+    public Response createReceptKomp(String body) {
+        JSONObject json = new JSONObject(body);
+
+        try {
+            ReceptKompDTO dto = new ReceptKompDTO(
+                    json.getInt("receptId"),
+                    json.getInt("raavareId"),
+                    json.getDouble("nomNetto"),
+                    json.getDouble("tolerance")
+            );
+            receptLogic.createReceptKomp(dto);
+            return Response.status(200)
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .entity(dto)
+                    .build();
+        } catch (Exception ex) {
+            return Response.status(400)
+                    .type(MediaType.TEXT_PLAIN)
+                    .entity(ex.getMessage())
+                    .build();
+        }
+    }
 }
