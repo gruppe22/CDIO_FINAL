@@ -44,10 +44,11 @@ public class VaegtSocket {
     }
 
     public String tareWeight() {
-        output.println("T crlf");
+        output.println("T");
         String returnvalue = null;
         try {
             returnvalue = bufferedReader.readLine();
+            System.out.println(returnvalue);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,6 @@
 package vaegtClient;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import dto.BrugerDTO;
 import dto.ProduktBatchDTO;
 import dto.ReceptDTO;
@@ -90,18 +91,34 @@ public class VaegtController {
             ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
             System.out.println(batchId);
             System.out.println(productBatch.toString());
-            //ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
-            //socket.sendAndAwaitReturn("Recept: " + recept.getReceptNavn());
 
             /*
-             * Resten mangler.. Pkt. 7 og frem
+            *Weight writes name of recipe and it is approved
              */
-    /*        socket.sendAndAwaitReturn("Vaegten skal vaere ubelastet."," " ," ");
-            socket.tareWeight();
-            socket.sendAndAwaitReturn("Placer venligst tara på vaegten." , " ", " ");
-            double taraweight = Double.parseDouble(SubStringGenerator(socket.readWeight(), "S", " ", 9));
-            socket.tareWeight();
-            socket.sendAndAwaitReturn("Placer netto på vaegten", " ", " ");
+            ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
+            input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() +"? (1:Y,2:N)","", "");
+            if (SubStringGenerator(input, "\"","\"", 1).equals("1")){
+
+            /*
+             * Vejning startes
+             */
+            input = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)","" ,"");
+                if (SubStringGenerator(input, "\"","\"", 1).equals("1")){
+
+        //TODO: Lav pkt 8 : produktbatch nummeret sættes til "under produktion"
+
+                input = socket.tareWeight();
+
+                //TODO: denne vægt skal gemmes - produktKompBatchDTO
+
+                input = socket.sendAndAwaitReturn("Stil beholder" , "", "");
+                double taraweight = Double.parseDouble(SubStringGenerator(socket.readWeight(), "S", " ", 9));
+
+                //TODO: denne vægt skal gemmes hvor?
+
+                input = socket.tareWeight();
+
+                socket.sendAndAwaitReturn("Placer netto på vaegten", " ", " ");
             netWeight = getNetWeight(socket.readWeight());
             socket.tareWeight();
             socket.sendAndAwaitReturn("Fjern venligst brutto fra vaegten"," ", "");
@@ -118,7 +135,6 @@ public class VaegtController {
         else {
             start();
         }
+        } else start();
     }
-
- */
-    }}}
+    }}
