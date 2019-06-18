@@ -24,12 +24,15 @@ public class BrugerDTO {
      */
     String rolle;
 
-    public BrugerDTO(int id, String oprNavn, String ini, String cpr, String rolle) {
+    boolean status;
+
+    public BrugerDTO(int id, String oprNavn, String ini, String cpr, String rolle, boolean status) {
         this.oprId = id;
         this.oprNavn = oprNavn;
         this.ini = ini;
         this.cpr = cpr;
         this.rolle = rolle;
+        this.status = status;
     }
 
     public BrugerDTO() {    }
@@ -75,13 +78,22 @@ public class BrugerDTO {
         this.rolle = rolle;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         String bruger = ("ID:" + " " + oprId + invisibleLine()+
                 "Navn:" + " " + oprNavn + invisibleLine()+
                 "Ini:" + " " + ini +invisibleLine()+
                 "CPR:" + " " + cpr +invisibleLine()+
-                "Rolle:" + " " + rolle);
+                "Rolle:" + " " + rolle +invisibleLine() +
+                "Status:" + " " + status);
 
         return bruger;
     }
