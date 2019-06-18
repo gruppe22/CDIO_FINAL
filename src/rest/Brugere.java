@@ -56,7 +56,8 @@ public class Brugere {
                     json.getString("oprNavn"),
                     json.getString("ini"),
                     json.getString("cpr"),
-                    json.getString("rolle")
+                    json.getString("rolle"),
+                    json.getBoolean("status")
             );
             userLogic.createBruger(user);
             return Response.status(200)
@@ -81,7 +82,8 @@ public class Brugere {
                     json.getString("oprNavn"),
                     json.getString("ini"),
                     json.getString("cpr"),
-                    json.getString("rolle")
+                    json.getString("rolle"),
+                    json.getBoolean("status")
             );
             userLogic.updateBruger(dto);
             return Response.status(200)
