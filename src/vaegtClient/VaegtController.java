@@ -153,5 +153,7 @@ public class VaegtController {
         } else {
             start();
         }
+
+        socket.closeConnection();
     }
 }

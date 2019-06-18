@@ -35,13 +35,13 @@ public class VaegtSocket {
         socket.close();
     }
 
-    public void sendMessageBig(String msg) {
+    /*public void sendMessageBig(String msg) {
         output.println("D \""+msg +"\" crlf");
     }
 
     public void sendMessageSmall(String msg) {
         output.println("P111 \""+msg +"\" crlf");
-    }
+    }*/
 
     public String tareWeight() {
         output.println("T");
@@ -71,7 +71,6 @@ public class VaegtSocket {
             }
             else input1 = bufferedReader.readLine();
         }
-
         return input2;
     }
 
@@ -91,11 +90,6 @@ public class VaegtSocket {
             }
             else input1 = bufferedReader.readLine();
         }
-
-
-
-
-
         return input2;
     }
 
