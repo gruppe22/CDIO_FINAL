@@ -48,7 +48,17 @@ public class ProduktBatchKompDAO implements IProduktBatchKompDAO {
 
     @Override
     public void createProduktBatchKomp(ProduktBatchKompDTO produktbatchkomponent) throws DALException {
+        try (Connection c = connection.createConnection()) {
+            PreparedStatement ps = c.prepareStatement("INSERT INTO ProduktBatch_has_RaavareBatch VALUES (?,?,?,?)");
+            ps.setInt(1, produktbatchkomponent.getRbId());
+            ps.setInt(2, produktbatchkomponent.getPbId());
+            ps.setDouble(3, produktbatchkomponent.getTara());
+            ps.setDouble(4, produktbatchkomponent.getNetto());
+            ps.execute();
 
+        } catch (SQLException | ConnectionManager.DALException ex){
+            throw new DALException("Database fejl");
+        }
     }
 
     @Override
