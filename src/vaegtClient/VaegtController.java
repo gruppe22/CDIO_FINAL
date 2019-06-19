@@ -81,8 +81,6 @@ public class VaegtController {
          */
         //System.out.println(user.getOprNavn()); user.getOprNavn()
 
-        socket.sendRaavareNavn("hej");
-
         input = socket.sendAndAwaitIntegerReturn("?" + "(1:Y, 2:N)","" ,"");
         if (SubStringGenerator(input, "\"","\"", 1).equals("1")) {
 
@@ -116,6 +114,8 @@ public class VaegtController {
                 while (true) {
                     input = socket.sendAndAwaitIntegerReturn("BatchId?", "", "");
                     int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
+
+                    socket.sendRaavareNavn("chokolade");
 
                     System.out.println(rbId);
 
