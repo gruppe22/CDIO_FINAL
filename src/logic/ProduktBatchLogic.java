@@ -42,4 +42,10 @@ public class ProduktBatchLogic {
             throw new Exception(ex);
         }
     }
+
+    public ProduktBatchDTO updateProduktBatch(ProduktBatchDTO batch) throws Exception {
+        return null;
+    }
+
+
 }
