@@ -1,5 +1,4 @@
-/*
-package tests;
+/*package tests;
 
 import dao.BrugerDAO;
 import dao.IBrugerDAO;
@@ -107,6 +106,4 @@ class BrugerDAOTest {
     }
 
 
-}
-
-*/
+}*/

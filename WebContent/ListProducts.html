@@ -1,28 +1,33 @@
-<h1>Råvareoversigt</h1>
-<div ng-controller="ListCBController">
+<h1>Receptoversigt</h1>
+<div ng-controller="ListProductsController">
     <div>
         <div class="row">
             <div class="col-sm">
-                <b>raavarebatch ID</b>
+                <b>Produktbatch ID</b>
             </div>
             <div class="col-sm">
-                <b>raavare ID</b>
+                <b>recept ID</b>
             </div>
             <div class="col-sm">
-                <b>Mængde</b>
+                <b>status</b>
+            </div>
+            <div class="col-sm">
             </div>
         </div>
     </div>
     <div class="container" ng-repeat="recept in recepts">
         <div class="row">
             <div class="col-sm">
-                {{recept.rbId}}
+                {{recept.pbId}}
             </div>
             <div class="col-sm">
-                {{recept.raavareId}}
+                {{recept.receptId}}
             </div>
             <div class="col-sm">
-                {{recept.maengde}}
+                {{recept.status}}
+            </div>
+            <div class="col-sm">
+                <a href="#!ShowRecept/{{recept.receptId}}">Vis Recept</a>
             </div>
         </div>
     </div>

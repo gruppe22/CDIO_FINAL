@@ -1,0 +1,18 @@
+<h1>Opret produktbatch</h1>
+
+<div class="col-md-8 order-md-1" ng-controller="CreateProductController">
+    <form class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="pbId">Produktbatch ID</label>
+                <input type="number" class="form-control" id="pbId" ng-model="newProduct.pbId" value="" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="receptId">recept ID</label>
+                <input type="number" class="form-control" id="receptId" ng-model="newProduct.receptId" value="" required>
+            </div>
+        </div>
+        <button id="submit" class="btn btn-primary btn-lg btn-block" ng-click="submitProduct()" type="submit">Opret</button>
+    </form>
+    {{error}}
+</div>

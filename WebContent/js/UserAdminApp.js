@@ -36,7 +36,7 @@
                     templateUrl : "ListRecepts.html",
                     controller : "ListReceptsController"
                 })
-                .when("ShowRecept/:receptId", {
+                .when("/ShowRecept/:receptId", {
                     templateUrl : "ShowRecept.html",
                     controller : "ShowReceptController"
                 })
@@ -44,13 +44,13 @@
                     templateUrl : "CreateRecept.html",
                     controller : "CreateReceptController"
                 })
+                .when("/CreateRecept/Next/:receptId", {
+                    templateUrl : "CreateReceptNext.html",
+                    controller : "CreateReceptNextController"
+                })
                 .when("/ListProducts", {
                     templateUrl : "ListProducts.html",
                     controller : "ListProductsController"
-                })
-                .when("/ShowProduct/:pbId", {
-                    templateUrl : "ShowProduct.html",
-                    controller : "ShowProductController"
                 })
                 .when("/CreateProduct", {
                     templateUrl : "CreateProduct.html",
@@ -277,39 +277,124 @@
     ListReceptsController.$inject = ['$scope'];
     userAdminApp.controller('ListReceptsController', ListReceptsController);
 
-    var ShowReceptController = function($scope, $routeparams) {
+    var ShowReceptController = function($scope, $routeParams) {
         var settings = {
-            url: "/rest/recept/komponent/" + $routeparams.receptId,
+            url: "/rest/receptkomponent/" + $routeParams.receptId,
             method: "GET",
             timout: 0
         };
 
-        $.ajax(settings).done(function (response) {
-            $scope.fetchedReceptKomponent = response;
-            $scope.$digest;
-        })
 
         var settings2 = {
             "url" : "http://localhost:8080/rest/raavare",
             "method" : "GET",
             "timeout" : 0,
-        }
+        };
 
-        $.ajax(settings2).done(function (response) {
-            $scope.comms = response;
-            $scope.$digest;
-        })
+        $.ajax(settings).done(function (response) {
+            let fetchedReceptKomponent = response;
+                    $.ajax(settings2).done(function (response) {
+                    for(i = 0; i < fetchedReceptKomponent.length; i++) {
+                        for(j = 0; j < response.length; j++) {
+                            if (fetchedReceptKomponent[i].raavareId === response[j].raavareId) {
+                                fetchedReceptKomponent[i].raavareNavn = response[j].raavareNavn;
+                            }
+                        }
+                    }
 
-        $scope.newComms = [];
-        for(i = 0; i++; i < $scope.comms) {
-            if($scope.comms[i].raavareId == $scope.fetchedReceptKomponent.raavareId) {
-                $scope.newComms.push($scope.comms[i]);
-            }
+                    $scope.result = fetchedReceptKomponent;
+                    $scope.$digest();
+                });
+            $scope.$digest();
+        });
+
+
+        var settings3 = {
+            url : "rest/recept/" + $routeParams.receptId,
+            method: "GET",
+            timeout: 0
+        };
+
+        $.ajax(settings3).done(function(response) {
+            $scope.recept = response;
+            $scope.$digest()
+        });
+    }
+
+    ShowReceptController.$inject = ['$scope', '$routeParams'];
+    userAdminApp.controller('ShowReceptController', ShowReceptController);
+
+    var CreateReceptController = function ($scope) {
+        $scope.error = "";
+        $scope.newRecept = {receptId: "", receptNavn: ""};
+
+
+        $scope.submitRecept = function () {
+            var settings = {
+                url: "rest/recept/",
+                method: "POST",
+                data: JSON.stringify($scope.newRecept),
+                contentType: "application/json",
+                success: function () {
+                    location.href="#!CreateRecept/Next/" + $scope.newRecept.receptId
+                },
+                error: function (data) {
+                    $scope.error = data.responseText;
+                    $scope.$digest()
+                }
+            };
+
+            $.ajax(settings)
+        };
+    }
+
+    CreateReceptController.$inject = ['$scope'];
+    userAdminApp.controller("CreateReceptController", CreateReceptController);
+
+    var CreateReceptNextController = function ($scope, $routeParams) {
+        $scope.error = "";
+        $scope.newReceptNext = {receptId: $routeParams.receptId, raavareId: "", nomNetto:"", tolerance:""};
+
+
+        $scope.nextRecept = function () {
+            var settings = {
+                url: "rest/receptkomponent/",
+                method: "POST",
+                data: JSON.stringify($scope.newReceptNext),
+                contentType: "application/json",
+                success: function () {
+                    location.href="#!CreateRecept/Next/" + $routeParams.receptId
+                },
+                error: function (data) {
+                    $scope.error = data.responseText;
+                    $scope.$digest()
+                }
+            };
+
+            $.ajax(settings)
+        };
+
+        $scope.doneRecept = function() {
+            var settings = {
+                url: "rest/receptkomponent/",
+                method: "POST",
+                data: JSON.stringify($scope.newReceptNext),
+                contentType: "application/json",
+                success: function () {
+                    location.href="#!ListRecepts"
+                },
+                error: function (data) {
+                    $scope.error = data.responseText;
+                    $scope.$digest()
+                }
+            };
+
+            $.ajax(settings)
         }
     }
 
-    ShowReceptController.$inject = ['$scope'];
-    userAdminApp.controller('ShowReceptController', ShowReceptController);
+    CreateReceptNextController.$inject = ['$scope', '$routeParams'];
+    userAdminApp.controller("CreateReceptNextController", CreateReceptNextController);
 
     var ListCBController = function($scope) {
         var settings = {
@@ -328,4 +413,74 @@
     }
     ListCBController.$inject = ['$scope'];
     userAdminApp.controller('ListCBController', ListCBController);
+
+    var CreateCBController = function ($scope) {
+        $scope.error = "";
+        $scope.newCB = {rbId: "", raavareId: "", maengde: ""};
+
+
+        $scope.submitCB = function () {
+            var settings = {
+                url: "rest/raavarebatch/",
+                method: "POST",
+                data: JSON.stringify($scope.newCB),
+                contentType: "application/json",
+                success: function () {
+                    location.href="#!ListCB"
+                },
+                error: function (data) {
+                    $scope.error = data.responseText;
+                    $scope.$digest()
+                }
+            };
+
+            $.ajax(settings)
+        };
+    }
+
+    CreateCBController.$inject = ['$scope'];
+    userAdminApp.controller("CreateCBController", CreateCBController);
+
+    var ListProductsController = function($scope) {
+        var settings = {
+            url: "/rest/produktbatch/",
+            method: "GET",
+            timeout: 0
+        };
+
+        $.ajax(settings).done(function (response) {
+            $scope.recepts = response;
+            $scope.$digest();
+
+        })
+    }
+    ListProductsController.$inject = ['$scope'];
+    userAdminApp.controller('ListProductsController', ListProductsController);
+
+    var CreateProductController = function ($scope) {
+        $scope.error = "";
+        $scope.newProduct = {pbId: "", receptId: "", status: 0};
+
+
+        $scope.submitProduct = function () {
+            var settings = {
+                url: "rest/produktbatch/",
+                method: "POST",
+                data: JSON.stringify($scope.newProduct),
+                contentType: "application/json",
+                success: function () {
+                    location.href="#!ListProducts"
+                },
+                error: function (data) {
+                    $scope.error = data.responseText;
+                    $scope.$digest()
+                }
+            };
+
+            $.ajax(settings)
+        };
+    }
+
+    CreateProductController.$inject = ['$scope'];
+    userAdminApp.controller("CreateProductController", CreateProductController);
 })();
