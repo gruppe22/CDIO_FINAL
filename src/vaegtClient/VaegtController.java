@@ -53,8 +53,12 @@ public class VaegtController {
         }
 
     }
+
+    public void setRaavareLogic(RaavareLogic raavareLogic) {
+        this.raavareLogic = raavareLogic;
+    }
+
     public void start() throws Exception {
-        //String material;
         double netWeight;
        // double bruttoWeight;
 
@@ -69,7 +73,7 @@ public class VaegtController {
 
 
         System.out.println(operatorNumber);
-        /*try {
+        try {
             user = userLogic.getBruger(Integer.parseInt(operatorNumber));
             System.out.println(user.toString());
         } catch (Exception e) {
@@ -79,27 +83,27 @@ public class VaegtController {
         /*
          * Approve operator
          */
-        //System.out.println(user.getOprNavn()); user.getOprNavn()
+        System.out.println(user.getOprNavn());
 
-        input = socket.sendAndAwaitIntegerReturn("?" + "(1:Y, 2:N)","" ,"");
+        input = socket.sendAndAwaitIntegerReturn(user.getOprNavn() + "?" + "(1:Y, 2:N)","" ,"");
         if (SubStringGenerator(input, "\"","\"", 1).equals("1")) {
 
             /*
              * Get product-batch number from weight
              */
-           // ProduktBatchDTO produktBatch = null; produktBatch.getPbId() +
-            input = socket.sendAndAwaitIntegerReturn(" Korrekt? (1:Y,2:N)","","");
+            input = socket.sendAndAwaitIntegerReturn("Produktbatch id?", "", "");
             int batchId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
-//            ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
+
+            ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
 
             System.out.println(batchId);
-            //System.out.println(productBatch.toString());
+            System.out.println(productBatch.toString());
 
             /*
             *Weight writes name of recipe and it is approved
              */
-            //ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId()); recept.getReceptNavn() +
-            input = socket.sendAndAwaitIntegerReturn("Recept? (1:Y,2:N)","", "");
+            ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
+            input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() +"Recept? (1:Y,2:N)","", "");
             if (SubStringGenerator(input, "\"","\"", 1).equals("1")){
 
             /*
@@ -134,7 +138,7 @@ public class VaegtController {
                         System.out.println(taraweight);
 
                     //TODO: denne vægt skal gemmes - produktKompBatchDTO
-                        input = socket.tareWeight();
+                        socket.tareWeight();
 
                         // raavare afvejes og registreres
                         socket.sendAndAwaitReturn("Lav afvejning.", "", "");
@@ -166,9 +170,5 @@ public class VaegtController {
         }
 
         socket.closeConnection();
-    }
-
-    public void setRaavareLogic(RaavareLogic raavareLogic) {
-        this.raavareLogic = raavareLogic;
     }
 }
