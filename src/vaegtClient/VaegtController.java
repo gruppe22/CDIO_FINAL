@@ -28,6 +28,7 @@ public class VaegtController {
         return netWeight;
     }
 
+
   /*  public double getBruttoWeight(double net, String bruttoWeightResult) {
         double bruttoWeight = net + Double.parseDouble(SubStringGenerator(bruttoWeightResult, "S", " ", 9));
         return bruttoWeight;
@@ -59,9 +60,6 @@ public class VaegtController {
     }
 
     public void start() throws Exception {
-        double netWeight;
-       // double bruttoWeight;
-
         /*
          * Get operator from weight
          */
@@ -85,15 +83,18 @@ public class VaegtController {
          */
         System.out.println(user.getOprNavn());
 
-        input = socket.sendAndAwaitIntegerReturn(user.getOprNavn() + "?" + "(1:Y, 2:N)","" ,"");
-        if (!SubStringGenerator(input, "\"","\"", 1).equals("1"))
+        input = socket.sendAndAwaitIntegerReturn(user.getOprNavn() + "?" + "(1:Y, 2:N)", "", "");
+        if (!SubStringGenerator(input, "\"", "\"", 1).equals("1"))
             start();
 
+    }
+
+    public void receptApproval() throws Exception {
         /*
          * Get product-batch number from weight
          */
-        input = socket.sendAndAwaitIntegerReturn("Produktbatch id?", "", "");
-        int batchId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
+        String input = socket.sendAndAwaitIntegerReturn("Produktbatch id?", "", "");
+        int batchId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
 
         ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
 
@@ -104,44 +105,47 @@ public class VaegtController {
          *Weight writes name of recipe and it is approved
          */
         ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
-        input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() +"Recept? (1:Y,2:N)","", "");
-        if (!SubStringGenerator(input, "\"","\"", 1).equals("1"))
+        input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() + "Recept? (1:Y,2:N)", "", "");
+        if (!SubStringGenerator(input, "\"", "\"", 1).equals("1"))
             start();
+
+        //TODO: Lav pkt 8 : produktbatch nummeret sættes til "under produktion"
+    }
 
         /*
          * Vejning startes
          */
 
-        //TODO: Lav pkt 8 : produktbatch nummeret sættes til "under produktion"
+    public void raavareAfvejning() throws Exception {
+        double netWeight;
 
         //TODO lav liste med raavarenavne fra recepten
 
         // raavarebatch registreres receptLogic.getRaavareNavn() +
         while (true) {
-            input = socket.sendAndAwaitIntegerReturn("BatchId?", "", "");
+            String input = socket.sendAndAwaitIntegerReturn("BatchId?", "", "");
             int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
-
-            socket.sendRaavareNavn("chokolade");
 
             System.out.println(rbId);
 
-            input = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)","" ,"");
-            if (!SubStringGenerator(input, "\"","\"", 1).equals("1"))
+            input = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)", "", "");
+            if (!SubStringGenerator(input, "\"", "\"", 1).equals("1"))
                 start();
-
-            //TODO: skal gemmes i produktKompBatchDTO
 
             //vaegten tareres
             socket.tareWeight();
 
             //beholderens vægt registreres
-            input = socket.sendAndAwaitReturn("Stil beholder", "", "");
+            socket.sendAndAwaitReturn("Stil beholder", "", "");
             double taraweight = Double.parseDouble(SubStringGenerator(socket.readWeight(), "S", " ", 9));
 
             System.out.println(taraweight);
 
             //TODO: denne vægt skal gemmes - produktKompBatchDTO
+
             socket.tareWeight();
+
+            socket.sendRaavareNavn("chokolade");
 
             // raavare afvejes og registreres
             socket.sendAndAwaitReturn("Lav afvejning.", "", "");
@@ -149,21 +153,17 @@ public class VaegtController {
 
             System.out.println(netWeight);
 
+            //TODO: denne vægt skal gemmes - produktKompBatchDTO
+
             //TODO lav kode til at vurdere om det er indenfor tolerancen
+            Double tolerance = null; // her skal hentes nomNetto + tolerance fra ReceptKomp
+            if (netWeight > tolerance) {
+                input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
 
-            input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
-            if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
-
-                //TODO: denne vægt skal gemmes - produktKompBatchDTO
-
-                              /*  input = socket.sendAndAwaitReturn("Flere rb? (1:Y,2:N)", "", "");
-                                if (SubStringGenerator(input, "\"", "\"", 1).equals("2")) {
-                                    break;
-                                }*/
             }
             // TODO: opdater lagerstatus?
-
-            socket.closeConnection();
         }
     }
-}
+    public void lagerStatusopdatering()throws Exception{}
+
+    }

@@ -4,6 +4,7 @@ import dao.ReceptDAO;
 import dao.ReceptKompDAO;
 import dto.ReceptDTO;
 import dto.ReceptKompDTO;
+import rest.Raavare;
 
 import java.util.List;
 
@@ -66,9 +67,11 @@ public class ReceptLogic {
         }
     }
 
-    public String getRaavareList() { // lav liste med raavare ud fra recept
+    public List<Raavare> getRaavareList(int raavareId) throws Exception {
+        // lav liste med raavare ud fra recept
     return null;}
 
     public String getRaavareNavn() { // snup et navn fra listen
     return null;}
+
 }
