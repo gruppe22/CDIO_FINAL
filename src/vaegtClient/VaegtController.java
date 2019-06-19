@@ -94,7 +94,8 @@ public class VaegtController {
         List<ReceptKompDTO> receptKomponenter = receptLogic.getReceptKompList(recept.getReceptId());
 
         for (ReceptKompDTO r : receptKomponenter) {
-            raavareAfvejning(r);
+            ProduktBatchKompDTO k = raavareAfvejning(r);
+            produktBatchLogic.createProduktBatchKomp(k);
         }
 
         productBatch.setStatus(2);
@@ -128,14 +129,21 @@ public class VaegtController {
         produktBatchLogic.updateProduktBatch(productBatch);
     }
 
-    public void raavareAfvejning(ReceptKompDTO receptKompDTO) throws Exception {
+    public ProduktBatchKompDTO raavareAfvejning(ReceptKompDTO receptKompDTO) throws Exception {
         double netWeight;
         RaavareBatchDTO batch = null;
+        ProduktBatchKompDTO batchKompDTO = new ProduktBatchKompDTO();
         String input;
 
-        String i = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)", "", "");
-        if (!SubStringGenerator(i, "\"", "\"", 1).equals("1"))
+        input = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)", "", "");
+        if (!SubStringGenerator(input, "\"", "\"", 1).equals("1"))
             raavareAfvejning(receptKompDTO);
+
+        socket.tareWeight();
+
+        socket.sendAndAwaitReturn("Stil beholder", "", "");
+        double taraWeight = Double.parseDouble(SubStringGenerator(socket.readWeight(), "S", " ", 9));
+        batchKompDTO.setTara(taraWeight);
 
         socket.tareWeight();
 
@@ -154,24 +162,18 @@ public class VaegtController {
             raavareAfvejning(receptKompDTO);
         }
 
-        socket.sendAndAwaitReturn("Stil beholder", "", "");
-        double taraweight = Double.parseDouble(SubStringGenerator(socket.readWeight(), "S", " ", 9));
-
-        //TODO: denne vægt skal gemmes - produktKompBatchDTO
-
-        socket.tareWeight();
-
         socket.sendAndAwaitReturn("Lav afvejning.", "", "");
         netWeight = getNetWeight(socket.readWeight());
 
-        //TODO: denne vægt skal gemmes - produktKompBatchDTO
-
-        //TODO lav kode til at vurdere om det er indenfor tolerancen
-        Double tolerance = null; // her skal hentes nomNetto + tolerance fra ReceptKomp
-        if (netWeight > tolerance) {
+        if (netWeight > receptKompDTO.getTolerance()) {
             input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
-
+            raavareAfvejning(receptKompDTO);
         }
+
+        batchKompDTO.setNetto(netWeight);
+
         // TODO: opdater lagerstatus?
+
+        return batchKompDTO;
     }
  }
