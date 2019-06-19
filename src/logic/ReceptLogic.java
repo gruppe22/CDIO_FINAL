@@ -73,4 +73,5 @@ public class ReceptLogic {
 
     public String getRaavareNavn() { // snup et navn fra listen
     return null;}
+
 }
