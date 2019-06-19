@@ -65,4 +65,10 @@ public class ReceptLogic {
             throw new Exception(ex);
         }
     }
+
+    public String getRaavareList() { // lav liste med raavare ud fra recept
+    return null;}
+
+    public String getRaavareNavn() { // snup et navn fra listen
+    return null;}
 }

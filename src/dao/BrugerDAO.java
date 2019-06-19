@@ -14,7 +14,7 @@ public class BrugerDAO implements IBrugerDAO {
     public BrugerDTO getBruger(int oprId) throws DALException {
         try (Connection c = connection.createConnection()) {
             BrugerDTO user = new BrugerDTO();
-            PreparedStatement ps = c.prepareStatement("SELECT * FROM Bruger WHERE brugerId =?");
+            PreparedStatement ps = c.prepareStatement("SELECT * FROM Bruger WHERE brugerId = ?");
             ps.setInt(1,oprId);
             ResultSet rs = ps.executeQuery();
 

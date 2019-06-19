@@ -3,17 +3,20 @@ package vaegtClient;
 import dto.BrugerDTO;
 import dto.ProduktBatchDTO;
 import dto.ReceptDTO;
-import logic.BrugerLogic;
-import logic.VaegtLogic;
+import logic.*;
 
 public class VaegtController {
     private VaegtSocket socket;
     private VaegtLogic vaegtLogic;
     private BrugerLogic userLogic;
+    private ProduktBatchLogic produktBatch;
+    private RaavareLogic raavareLogic;
+    private ReceptLogic receptLogic;
 
     public VaegtController() {
         vaegtLogic = new VaegtLogic();
         userLogic = new BrugerLogic();
+        produktBatch = new ProduktBatchLogic();
 
     }
 
@@ -66,7 +69,7 @@ public class VaegtController {
 
 
         System.out.println(operatorNumber);
-        try {
+        /*try {
             user = userLogic.getBruger(Integer.parseInt(operatorNumber));
             System.out.println(user.toString());
         } catch (Exception e) {
@@ -76,25 +79,29 @@ public class VaegtController {
         /*
          * Approve operator
          */
-        System.out.println(user.getOprNavn());
-        input = socket.sendAndAwaitIntegerReturn(user.getOprNavn()+"?" + "(1:Y, 2:N)","" ,"");
+        //System.out.println(user.getOprNavn()); user.getOprNavn()
+
+        socket.sendRaavareNavn("hej");
+
+        input = socket.sendAndAwaitIntegerReturn("?" + "(1:Y, 2:N)","" ,"");
         if (SubStringGenerator(input, "\"","\"", 1).equals("1")) {
 
             /*
              * Get product-batch number from weight
              */
-            input = socket.sendAndAwaitIntegerReturn("Indtast pb: ","","");
+           // ProduktBatchDTO produktBatch = null; produktBatch.getPbId() +
+            input = socket.sendAndAwaitIntegerReturn(" Korrekt? (1:Y,2:N)","","");
             int batchId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
-            ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
+//            ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
 
             System.out.println(batchId);
-            System.out.println(productBatch.toString());
+            //System.out.println(productBatch.toString());
 
             /*
             *Weight writes name of recipe and it is approved
              */
-            ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
-            input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() +"? (1:Y,2:N)","", "");
+            //ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId()); recept.getReceptNavn() +
+            input = socket.sendAndAwaitIntegerReturn("Recept? (1:Y,2:N)","", "");
             if (SubStringGenerator(input, "\"","\"", 1).equals("1")){
 
             /*
@@ -103,9 +110,11 @@ public class VaegtController {
 
         //TODO: Lav pkt 8 : produktbatch nummeret sættes til "under produktion"
 
-                // raavarebatch registreres
+                //TODO lav liste med raavarenavne fra recepten
+
+                // raavarebatch registreres receptLogic.getRaavareNavn() +
                 while (true) {
-                    input = socket.sendAndAwaitIntegerReturn("Indtast rbId", "", "");
+                    input = socket.sendAndAwaitIntegerReturn("BatchId?", "", "");
                     int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
 
                     System.out.println(rbId);
@@ -133,15 +142,17 @@ public class VaegtController {
 
                         System.out.println(netWeight);
 
-                        input = socket.sendAndAwaitReturn("OK (1) eller Kasseret (2) ?", "", "");
+                        //TODO lav kode til at vurdere om det er indenfor tolerancen
+
+                        input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
                             if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
 
                         //TODO: denne vægt skal gemmes - produktKompBatchDTO
 
-                                input = socket.sendAndAwaitReturn("Flere rb? (1:Y,2:N)", "", "");
+                              /*  input = socket.sendAndAwaitReturn("Flere rb? (1:Y,2:N)", "", "");
                                 if (SubStringGenerator(input, "\"", "\"", 1).equals("2")) {
                                     break;
-                                }
+                                }*/
                             }
                     // TODO: opdater lagerstatus?
                         }
@@ -150,10 +161,14 @@ public class VaegtController {
             else {
             start();
             }
-        } else {
+       } else {
             start();
         }
 
         socket.closeConnection();
+    }
+
+    public void setRaavareLogic(RaavareLogic raavareLogic) {
+        this.raavareLogic = raavareLogic;
     }
 }

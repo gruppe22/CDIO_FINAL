@@ -50,6 +50,19 @@ public class RaavareLogic {
         }
     }
 
+    public RaavareBatchDTO getRaavareBatch (int rb) throws Exception{
+        try {
+            RaavareBatchDTO dto = batchDAO.getRaavareBatch(rb);
+            if (dto.getRaavareId() != 0)
+                return dto;
+            else
+                return null;
+        }
+        catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+
     public RaavareDTO createRaavare(RaavareDTO raavare) throws Exception {
 
         if (raavare.getRaavareNavn().equals("") || raavare.getLeverandoer().equals(""))
@@ -90,4 +103,9 @@ public class RaavareLogic {
             throw new Exception(ex);
         }
     }
+
+    public String getRaavareBatch() {
+    return null;
+    }
+
 }
