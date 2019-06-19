@@ -22,6 +22,8 @@ public class VaegtController {
         vaegtLogic = new VaegtLogic();
         userLogic = new BrugerLogic();
         produktBatchLogic = new ProduktBatchLogic();
+        raavareLogic = new RaavareLogic();
+        receptLogic = new ReceptLogic();
     }
 
     public void setSocket(VaegtSocket socket) {
@@ -33,7 +35,7 @@ public class VaegtController {
         return netWeight;
     }
 
-  /*  public double getBruttoWeight(double net, String bruttoWeightResult) {
+    /*  public double getBruttoWeight(double net, String bruttoWeightResult) {
         double bruttoWeight = net + Double.parseDouble(SubStringGenerator(bruttoWeightResult, "S", " ", 9));
         return bruttoWeight;
     }*/
@@ -57,10 +59,6 @@ public class VaegtController {
             }
             else input = socket.readWeight();
         }
-    }
-
-    public void setRaavareLogic(RaavareLogic raavareLogic) {
-        this.raavareLogic = raavareLogic;
     }
 
     public void start() throws Exception {
