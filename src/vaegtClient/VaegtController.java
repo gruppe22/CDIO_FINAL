@@ -67,9 +67,9 @@ public class VaegtController {
          */
         String input = socket.sendAndAwaitIntegerReturn("Indtast opr.id", "", "");
 
-            BrugerDTO user = null;
-            String operatorNumber = null;
-            operatorNumber = SubStringGenerator(input, "\"", "\"", 1);
+        BrugerDTO user = null;
+        String operatorNumber = null;
+        operatorNumber = SubStringGenerator(input, "\"", "\"", 1);
 
 
         System.out.println(operatorNumber);
@@ -86,89 +86,84 @@ public class VaegtController {
         System.out.println(user.getOprNavn());
 
         input = socket.sendAndAwaitIntegerReturn(user.getOprNavn() + "?" + "(1:Y, 2:N)","" ,"");
-        if (SubStringGenerator(input, "\"","\"", 1).equals("1")) {
+        if (!SubStringGenerator(input, "\"","\"", 1).equals("1"))
+            start();
 
-            /*
-             * Get product-batch number from weight
-             */
-            input = socket.sendAndAwaitIntegerReturn("Produktbatch id?", "", "");
-            int batchId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
+        /*
+         * Get product-batch number from weight
+         */
+        input = socket.sendAndAwaitIntegerReturn("Produktbatch id?", "", "");
+        int batchId =  Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
 
-            ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
+        ProduktBatchDTO productBatch = vaegtLogic.getProduktBatch(batchId);
 
-            System.out.println(batchId);
-            System.out.println(productBatch.toString());
+        System.out.println(batchId);
+        System.out.println(productBatch.toString());
 
-            /*
-            *Weight writes name of recipe and it is approved
-             */
-            ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
-            input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() +"Recept? (1:Y,2:N)","", "");
-            if (SubStringGenerator(input, "\"","\"", 1).equals("1")){
+        /*
+         *Weight writes name of recipe and it is approved
+         */
+        ReceptDTO recept = vaegtLogic.getRecept(productBatch.getReceptId());
+        input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() +"Recept? (1:Y,2:N)","", "");
+        if (!SubStringGenerator(input, "\"","\"", 1).equals("1"))
+            start();
 
-            /*
-             * Vejning startes
-             */
+        /*
+         * Vejning startes
+         */
 
         //TODO: Lav pkt 8 : produktbatch nummeret sættes til "under produktion"
 
-                //TODO lav liste med raavarenavne fra recepten
+        //TODO lav liste med raavarenavne fra recepten
 
-                // raavarebatch registreres receptLogic.getRaavareNavn() +
-                while (true) {
-                    input = socket.sendAndAwaitIntegerReturn("BatchId?", "", "");
-                    int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
+        // raavarebatch registreres receptLogic.getRaavareNavn() +
+        while (true) {
+            input = socket.sendAndAwaitIntegerReturn("BatchId?", "", "");
+            int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
 
-                    socket.sendRaavareNavn("chokolade");
+            socket.sendRaavareNavn("chokolade");
 
-                    System.out.println(rbId);
+            System.out.println(rbId);
 
-                    input = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)","" ,"");
-                        if (SubStringGenerator(input, "\"","\"", 1).equals("1")){
+            input = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)","" ,"");
+            if (!SubStringGenerator(input, "\"","\"", 1).equals("1"))
+                start();
 
-                        //TODO: skal gemmes i produktKompBatchDTO
+            //TODO: skal gemmes i produktKompBatchDTO
 
-                        //vaegten tareres
-                        socket.tareWeight();
+            //vaegten tareres
+            socket.tareWeight();
 
-                        //beholderens vægt registreres
-                        input = socket.sendAndAwaitReturn("Stil beholder", "", "");
-                        double taraweight = Double.parseDouble(SubStringGenerator(socket.readWeight(), "S", " ", 9));
+            //beholderens vægt registreres
+            input = socket.sendAndAwaitReturn("Stil beholder", "", "");
+            double taraweight = Double.parseDouble(SubStringGenerator(socket.readWeight(), "S", " ", 9));
 
-                        System.out.println(taraweight);
+            System.out.println(taraweight);
 
-                    //TODO: denne vægt skal gemmes - produktKompBatchDTO
-                        socket.tareWeight();
+            //TODO: denne vægt skal gemmes - produktKompBatchDTO
+            socket.tareWeight();
 
-                        // raavare afvejes og registreres
-                        socket.sendAndAwaitReturn("Lav afvejning.", "", "");
-                        netWeight = getNetWeight(socket.readWeight());
+            // raavare afvejes og registreres
+            socket.sendAndAwaitReturn("Lav afvejning.", "", "");
+            netWeight = getNetWeight(socket.readWeight());
 
-                        System.out.println(netWeight);
+            System.out.println(netWeight);
 
-                        //TODO lav kode til at vurdere om det er indenfor tolerancen
+            //TODO lav kode til at vurdere om det er indenfor tolerancen
 
-                        input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
-                            if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
+            input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
+            if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
 
-                        //TODO: denne vægt skal gemmes - produktKompBatchDTO
+                //TODO: denne vægt skal gemmes - produktKompBatchDTO
 
                               /*  input = socket.sendAndAwaitReturn("Flere rb? (1:Y,2:N)", "", "");
                                 if (SubStringGenerator(input, "\"", "\"", 1).equals("2")) {
                                     break;
                                 }*/
-                            }
-                    // TODO: opdater lagerstatus?
-                        }
-                }
             }
-            else {
-            start();
-            }
-       } else {
-            start();
-        }
+            // TODO: opdater lagerstatus?
 
-        socket.closeConnection();
+            socket.closeConnection();
+        }
     }
 }
