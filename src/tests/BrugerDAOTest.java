@@ -32,9 +32,9 @@ class BrugerDAOTest {
             e.printStackTrace();
         }
         // Check if users are in DB and have expected ID
-        assertEquals(Kasper.getOprId(),dao.getBruger(1).getOprId());
-        assertEquals(Hans.getOprId(),dao.getBruger(2).getOprId());
-        assertEquals(Ray.getOprId(),dao.getBruger(3).getOprId());
+        assertEquals(Kasper.getOprId(),dao.getBruger(100).getOprId());
+        assertEquals(Hans.getOprId(),dao.getBruger(101).getOprId());
+        assertEquals(Ray.getOprId(),dao.getBruger(102).getOprId());
 
         // teardown
 
@@ -79,9 +79,9 @@ class BrugerDAOTest {
         dao.updateBruger(Hans);
         dao.updateBruger(Ray);
 
-        assertEquals(Kasper.getOprNavn(),dao.getBruger(1).getOprNavn());
-        assertEquals(Hans.getOprNavn(),dao.getBruger(2).getOprNavn());
-        assertEquals(Ray.getOprNavn(),dao.getBruger(3).getOprNavn());
+        assertEquals(Kasper.getOprNavn(),dao.getBruger(100).getOprNavn());
+        assertEquals(Hans.getOprNavn(),dao.getBruger(101).getOprNavn());
+        assertEquals(Ray.getOprNavn(),dao.getBruger(102).getOprNavn());
 
         // teardown
         dao.deleteBruger(Kasper);
