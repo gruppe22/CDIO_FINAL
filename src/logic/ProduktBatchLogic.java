@@ -1,11 +1,15 @@
 package logic;
 
 import dao.ProduktBatchDAO;
+import dao.ProduktBatchKompDAO;
 import dto.ProduktBatchDTO;
+import dto.ProduktBatchKompDTO;
+
 import java.util.List;
 
 public class ProduktBatchLogic {
     private ProduktBatchDAO dao = new ProduktBatchDAO();
+    private ProduktBatchKompDAO kompDAO = new ProduktBatchKompDAO();
 
     public ProduktBatchDTO getProduktBatch(int id) throws Exception {
         try {
@@ -37,6 +41,17 @@ public class ProduktBatchLogic {
         try {
             dao.createProduktBatch(produktBatch);
             return dao.getProduktBatch(produktBatch.getPbId());
+        }
+        catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+
+    public ProduktBatchKompDTO createProduktBatchKomp(ProduktBatchKompDTO kompDTO) throws Exception {
+
+        try {
+            kompDAO.createProduktBatchKomp(kompDTO);
+            return kompDAO.getProduktBatchKomp(kompDTO.getPbId(), kompDTO.getRbId());
         }
         catch (Exception ex) {
             throw new Exception(ex);
