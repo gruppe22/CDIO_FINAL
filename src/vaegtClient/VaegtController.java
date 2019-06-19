@@ -74,7 +74,6 @@ public class VaegtController {
         String operatorNumber = null;
         operatorNumber = SubStringGenerator(input, "\"", "\"", 1);
 
-        System.out.println(operatorNumber);
         try {
             user = userLogic.getBruger(Integer.parseInt(operatorNumber));
         } catch (Exception e) {
@@ -147,7 +146,9 @@ public class VaegtController {
 
         socket.tareWeight();
 
-        input = socket.sendAndAwaitIntegerReturn("RaavareBatchId:", "", "");
+        // skal denne ikke køre i et loop indtil vi ikke har flere raavare der ikke er afvejet?
+
+        input = socket.sendAndAwaitIntegerReturn(receptLogic.getRaavareNavn()+"Id:", "", "");
         int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
 
         try {
@@ -163,16 +164,18 @@ public class VaegtController {
         }
 
         socket.sendAndAwaitReturn("Lav afvejning.", "", "");
+        socket.sendRaavareNavn(receptLogic.getRaavareNavn());
+
         netWeight = getNetWeight(socket.readWeight());
 
         if (netWeight > receptKompDTO.getTolerance()) {
             input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
-            raavareAfvejning(receptKompDTO);
+            batch.setMaengde(batch.getMaengde()-netWeight);
+            raavareAfvejning(receptKompDTO);// jeg håber jeg opdaterer mængden i databasen her så man kan føre lagerstatus
         }
 
         batchKompDTO.setNetto(netWeight);
-
-        // TODO: opdater lagerstatus?
+        batch.setMaengde(batch.getMaengde()-netWeight); // jeg håber jeg opdaterer mængden i databasen her så man kan føre lagerstatus
 
         return batchKompDTO;
     }

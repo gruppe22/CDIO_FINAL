@@ -4,6 +4,8 @@ import dao.RaavareBatchDAO;
 import dao.RaavareDAO;
 import dto.RaavareBatchDTO;
 import dto.RaavareDTO;
+import rest.RaavareBatch;
+
 import java.util.List;
 
 public class RaavareLogic {
@@ -103,9 +105,4 @@ public class RaavareLogic {
             throw new Exception(ex);
         }
     }
-
-    public String getRaavareBatch() {
-    return null;
-    }
-
 }
