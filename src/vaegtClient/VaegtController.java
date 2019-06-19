@@ -133,6 +133,7 @@ public class VaegtController {
     public void raavareAfvejning(ReceptKompDTO receptKompDTO) throws Exception {
         double netWeight;
         RaavareBatchDTO batch = null;
+        String input;
 
         String i = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)", "", "");
         if (!SubStringGenerator(i, "\"", "\"", 1).equals("1"))
@@ -140,18 +141,18 @@ public class VaegtController {
 
         socket.tareWeight();
 
-        String input = socket.sendAndAwaitIntegerReturn("RaavareBatchId:", "", "");
+        input = socket.sendAndAwaitIntegerReturn("RaavareBatchId:", "", "");
         int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
 
         try {
             batch = raavareLogic.getRaavareBatch(rbId);
         } catch (Exception e) {
-            String i = socket.sendAndAwaitReturn("RavareBatch findes ikke", "", "");
+            input = socket.sendAndAwaitReturn("RavareBatch findes ikke", "", "");
             raavareAfvejning(receptKompDTO);
         }
 
         if (batch.getRaavareId() != receptKompDTO.getRaavareId()) {
-            String i = socket.sendAndAwaitReturn("Forkert RavareBatch", "", "");
+            input = socket.sendAndAwaitReturn("Forkert RavareBatch", "", "");
             raavareAfvejning(receptKompDTO);
         }
 
