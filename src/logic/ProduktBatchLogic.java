@@ -44,7 +44,19 @@ public class ProduktBatchLogic {
     }
 
     public ProduktBatchDTO updateProduktBatch(ProduktBatchDTO batch) throws Exception {
-        return null;
+        if (getProduktBatch(batch.getPbId()) == null)
+            throw new Exception("Batch findes ikke");
+
+        if ((batch.getReceptId() < 0 && batch.getReceptId() >99999999) ||(batch.getStatus() < 0 && batch.getStatus()>9))
+            throw new Exception("Felterne må ikke være tomme");
+
+        try {
+            dao.updateProduktBatch(batch);
+            return batch;
+        }
+        catch (Exception ex) {
+            throw new Exception(ex);
+        }
     }
 
 
