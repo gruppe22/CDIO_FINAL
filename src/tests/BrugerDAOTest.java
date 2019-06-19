@@ -1,4 +1,4 @@
-/*package tests;
+package tests;
 
 import dao.BrugerDAO;
 import dao.IBrugerDAO;
@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class BrugerDAOTest {
 
     // Setup
-    BrugerDTO Kasper = new BrugerDTO(100, "Kasper", "KB", "2510882134", "Administrator");
-    BrugerDTO Hans = new BrugerDTO(101, "Hans Henning", "HH", "1903995783", "Pharmaceut");
-    BrugerDTO Ray = new BrugerDTO(102, "Ray Charles", "SHG", "1901565234", "Laborant");
+    BrugerDTO Kasper = new BrugerDTO(100, "Kasper", "KB", "2510882134", "Administrator",true);
+    BrugerDTO Hans = new BrugerDTO(101, "Hans Henning", "HH", "1903995783", "Pharmaceut",true);
+    BrugerDTO Ray = new BrugerDTO(102, "Ray Charles", "SHG", "1901565234", "Laborant",true);
     IBrugerDAO dao = new BrugerDAO();
 
 
@@ -106,4 +106,4 @@ class BrugerDAOTest {
     }
 
 
-}*/
+}
