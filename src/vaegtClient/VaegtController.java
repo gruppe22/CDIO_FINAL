@@ -153,18 +153,13 @@ public class VaegtController {
 
                 System.out.println(netWeight);
 
+                //TODO: denne vægt skal gemmes - produktKompBatchDTO
+
                 //TODO lav kode til at vurdere om det er indenfor tolerancen
-
+                Double tolerance = null; //
+                if (netWeight>tolerance){
                 input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
-                if (SubStringGenerator(input, "\"", "\"", 1).equals("1")) {
 
-                    //TODO: denne vægt skal gemmes - produktKompBatchDTO
-
-                              /*  input = socket.sendAndAwaitReturn("Flere rb? (1:Y,2:N)", "", "");
-                                if (SubStringGenerator(input, "\"", "\"", 1).equals("2")) {
-                                    break;
-                                }*/
-                }
             }
             // TODO: opdater lagerstatus?
         }
