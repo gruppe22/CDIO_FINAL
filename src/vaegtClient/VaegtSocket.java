@@ -65,7 +65,7 @@ public class VaegtSocket {
     }
 
     public String sendAndAwaitReturn(String msg, String msg2, String msg3) throws Exception {
-        output.println("RM20 3 \""
+        output.println("RM20 8 \""
                 +msg+ "\" " + "\""
                 +msg2+ "\" " + "\""
                 +msg3 + "\" ");

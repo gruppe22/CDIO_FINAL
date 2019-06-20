@@ -13,9 +13,7 @@ public class ProduktBatchKompDTO
     /** Laborant-identifikationsnummer */
     int oprId;
 
-    boolean status;
-
-    public ProduktBatchKompDTO(int pbId, int rbId, double tara, double netto, int oprId, boolean status) {
+    public ProduktBatchKompDTO(int pbId, int rbId, double tara, double netto, int oprId) {
         this.pbId = pbId;
         this.rbId = rbId;
         this.tara = tara;

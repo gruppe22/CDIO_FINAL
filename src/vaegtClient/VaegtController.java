@@ -14,6 +14,8 @@ public class VaegtController {
     private ProduktBatchLogic produktBatchLogic;
     private RaavareLogic raavareLogic;
     private ReceptLogic receptLogic;
+    private int pbId;
+    private int opId;
 
     ProduktBatchDTO productBatch;
     ReceptDTO recept;
@@ -73,6 +75,7 @@ public class VaegtController {
         BrugerDTO user = null;
         String operatorNumber = null;
         operatorNumber = SubStringGenerator(input, "\"", "\"", 1);
+        this.opId = Integer.parseInt(operatorNumber);
 
         try {
             user = userLogic.getBruger(Integer.parseInt(operatorNumber));
@@ -107,6 +110,7 @@ public class VaegtController {
          */
         String input = socket.sendAndAwaitIntegerReturn("Produktbatch id:", "", "");
         int batchId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
+        this.pbId = batchId;
 
         productBatch = vaegtLogic.getProduktBatch(batchId);
         if (productBatch.getPbId() == 0){
@@ -118,9 +122,9 @@ public class VaegtController {
          *Weight writes name of recipe and it is approved
          */
         recept = vaegtLogic.getRecept(productBatch.getReceptId());
-        input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() + " (1:Y,2:N)", "", "");
+        input = socket.sendAndAwaitReturn(recept.getReceptNavn() + " (Y/N)", "Korrekt receptnavn?", "");
 
-        if (!SubStringGenerator(input, "\"", "\"", 1).equals("1"))
+        if (!SubStringGenerator(input, "\"", "\"", 1).equals("Y"))
             receptApproval();
 
         productBatch.setStatus(1);
@@ -133,7 +137,7 @@ public class VaegtController {
         ProduktBatchKompDTO batchKompDTO = new ProduktBatchKompDTO();
         String input;
 
-        input = socket.sendAndAwaitReturn("Er vaegt tom? (1:Y,2:N)", "", "");
+        input = socket.sendAndAwaitIntegerReturn("Er vaegt tom? (1:Y,2:N)", "", "");
         if (!SubStringGenerator(input, "\"", "\"", 1).equals("1"))
             raavareAfvejning(receptKompDTO);
 
@@ -145,8 +149,11 @@ public class VaegtController {
 
         socket.tareWeight();
 
-        input = socket.sendAndAwaitIntegerReturn(raavareLogic.getRaavare(receptKompDTO.getRaavareId()).getRaavareNavn() + " bId?", "", "");
+        input = socket.sendAndAwaitReturn(raavareLogic.getRaavare(receptKompDTO.getRaavareId()).getRaavareNavn()+" " , "Indtast batchId", "");
         int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
+        batchKompDTO.setRbId(rbId);
+        batchKompDTO.setPbId(this.pbId);
+        batchKompDTO.setOprId(this.opId);
 
         try {
             batch = raavareLogic.getRaavareBatch(rbId);
