@@ -171,7 +171,7 @@ public class VaegtController {
 
         netWeight = getNetWeight(socket.readWeight());
 
-        if (netWeight > receptKompDTO.getTolerance()) {
+        if (netWeight > ((1 + receptKompDTO.getTolerance()) * receptKompDTO.getNomNetto())) {
             input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
             batch.setMaengde(batch.getMaengde()-netWeight); // jeg håber jeg opdaterer mængden i databasen her så man kan føre lagerstatus
             raavareAfvejning(receptKompDTO);
