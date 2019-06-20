@@ -66,12 +66,4 @@ public class ReceptLogic {
             throw new Exception(ex);
         }
     }
-
-    public List<Raavare> getRaavareList(int raavareId) throws Exception {
-        // lav liste med raavare ud fra recept
-    return null;}
-
-    public String getRaavareNavn() { // snup et navn fra listen
-    return null;}
-
 }
