@@ -97,8 +97,7 @@
                     }
                 },
                 error : function () {
-                    /*angular.element('#ajaxchangediv').html('<p style="color : red;"> BrugerId kunne ikke findes. </p>')*/
-                    angular.element('#ajaxchangediv').html('<a class= nav-link" href="#!ListComm"> Test, tryk her. </a>');
+                    angular.element('#ajaxchangediv').html('<p style="color : red;"> BrugerId kunne ikke findes. </p>')
 
                 }
             });

@@ -173,12 +173,12 @@ public class VaegtController {
 
         if (netWeight > ((1 + receptKompDTO.getTolerance()) * receptKompDTO.getNomNetto())) {
             input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
-            batch.setMaengde(batch.getMaengde()-netWeight); // jeg håber jeg opdaterer mængden i databasen her så man kan føre lagerstatus
+            batch.setMaengde(batch.getMaengde()-netWeight);
             raavareAfvejning(receptKompDTO);
         }
 
         batchKompDTO.setNetto(netWeight);
-        batch.setMaengde(batch.getMaengde()-netWeight); // jeg håber jeg opdaterer mængden i databasen her så man kan føre lagerstatus
+        batch.setMaengde(batch.getMaengde()-netWeight);
 
         return batchKompDTO;
     }
