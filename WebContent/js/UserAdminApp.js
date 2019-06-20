@@ -126,7 +126,7 @@
     var CreateUserController = function ($scope) {
         $scope.error = "";
         $scope.roles = [ "Administrator", "Pharmaceut", "Produktionsleder", "Laborant" ];
-        $scope.newUser = { oprId: "", oprNavn: "", ini: "", cpr: "", rolle: "" };
+        $scope.newUser = { oprId: "", oprNavn: "", ini: "", cpr: "", rolle: "", status: false };
 
         $scope.submitCreate = function() {
             var settings = {
@@ -167,6 +167,9 @@
 
         $scope.submitEdit = function()
         {
+            if($scope.editedUser.status != true) {
+                $scope.editedUser.status = false;
+            }
             var settings = {
                 url: "/rest/brugere/",
                 method : "PUT",

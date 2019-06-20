@@ -34,6 +34,14 @@
                 </select>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="status">Status</label>
+                <div class="input-group">
+                    <input type="checkbox" class="form-control" id="status" ng-model="editedUser.status" ng-true-value="true" ng-false-value="false" required>
+                </div>
+            </div>
+        </div>
         <button id="submit" class="btn btn-primary btn-lg btn-block" ng-click="submitEdit()" type="submit">Gem</button>
     </form>
     {{error}}

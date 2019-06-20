@@ -83,7 +83,7 @@ public class BrugerDAO implements IBrugerDAO {
     @Override
     public void updateBruger(BrugerDTO opr) throws DALException {
         try (Connection c = connection.createConnection()) {
-            PreparedStatement ps = c.prepareStatement("UPDATE Bruger SET brugerId = ?,brugerNavn = ?,ini = ?, cpr = ? , rolle = ?, status = ?, WHERE brugerId = ?;");
+            PreparedStatement ps = c.prepareStatement("UPDATE Bruger SET brugerId = ?,brugerNavn = ?,ini = ?, cpr = ? , rolle = ?, status = ? WHERE brugerId = ?;");
             ps.setInt(1, opr.getOprId());
             ps.setString(2, opr.getOprNavn());
             ps.setString(3, opr.getIni());

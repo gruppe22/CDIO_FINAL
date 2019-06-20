@@ -34,6 +34,15 @@
                 </select>
             </div>
         </div>
+        <div class="row">
+            <label for="status">Status</label>
+            <div class="input-group">
+                <input type="checkbox" class="form-control" id="status" ng-model="newUser.status" ng-true-value="true" ng-false-value="false" required>
+                <div class="invalid-feedback" style="...">
+                    Status skal vælges!
+                </div>
+            </div>
+        </div>
         <button id="submit" class="btn btn-primary btn-lg btn-block" ng-click="submitCreate()" type="submit">Opret</button>
     </form>
     {{error}}
