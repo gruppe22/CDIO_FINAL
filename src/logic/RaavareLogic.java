@@ -4,6 +4,8 @@ import dao.RaavareBatchDAO;
 import dao.RaavareDAO;
 import dto.RaavareBatchDTO;
 import dto.RaavareDTO;
+import rest.RaavareBatch;
+
 import java.util.List;
 
 public class RaavareLogic {
@@ -44,6 +46,19 @@ public class RaavareLogic {
     public List<RaavareBatchDTO> getRaavareBatchList(int batchId) throws Exception {
         try {
             return batchDAO.getRaavareBatchList(batchId);
+        }
+        catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+
+    public RaavareBatchDTO getRaavareBatch (int rb) throws Exception{
+        try {
+            RaavareBatchDTO dto = batchDAO.getRaavareBatch(rb);
+            if (dto.getRaavareId() != 0)
+                return dto;
+            else
+                return null;
         }
         catch (Exception ex) {
             throw new Exception(ex);
