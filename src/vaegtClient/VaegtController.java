@@ -108,9 +108,8 @@ public class VaegtController {
         String input = socket.sendAndAwaitIntegerReturn("Produktbatch id:", "", "");
         int batchId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
 
-        try {
-            productBatch = vaegtLogic.getProduktBatch(batchId);
-        } catch (Exception e) {
+        productBatch = vaegtLogic.getProduktBatch(batchId);
+        if (productBatch.getPbId() == 0){
             String i = socket.sendAndAwaitReturn("Batch findes ikke", "", "");
             receptApproval();
         }
@@ -119,7 +118,7 @@ public class VaegtController {
          *Weight writes name of recipe and it is approved
          */
         recept = vaegtLogic.getRecept(productBatch.getReceptId());
-        input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() + "Recept? (1:Y,2:N)", "", "");
+        input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() + " (1:Y,2:N)", "", "");
 
         if (!SubStringGenerator(input, "\"", "\"", 1).equals("1"))
             receptApproval();
@@ -146,9 +145,7 @@ public class VaegtController {
 
         socket.tareWeight();
 
-        // skal denne ikke køre i et loop indtil vi ikke har flere raavare der ikke er afvejet?
-
-        input = socket.sendAndAwaitIntegerReturn(receptLogic.getRaavareNavn()+"Id:", "", "");
+        input = socket.sendAndAwaitIntegerReturn(raavareLogic.getRaavare(receptKompDTO.getRaavareId()).getRaavareNavn() + " bId?", "", "");
         int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
 
         try {
@@ -164,14 +161,13 @@ public class VaegtController {
         }
 
         socket.sendAndAwaitReturn("Lav afvejning.", "", "");
-        socket.sendRaavareNavn(receptLogic.getRaavareNavn());
 
         netWeight = getNetWeight(socket.readWeight());
 
         if (netWeight > receptKompDTO.getTolerance()) {
             input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
-            batch.setMaengde(batch.getMaengde()-netWeight);
-            raavareAfvejning(receptKompDTO);// jeg håber jeg opdaterer mængden i databasen her så man kan føre lagerstatus
+            batch.setMaengde(batch.getMaengde()-netWeight); // jeg håber jeg opdaterer mængden i databasen her så man kan føre lagerstatus
+            raavareAfvejning(receptKompDTO);
         }
 
         batchKompDTO.setNetto(netWeight);

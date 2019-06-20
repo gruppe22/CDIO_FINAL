@@ -58,7 +58,6 @@ public class VaegtSocket {
         String returnvalue = null;
         try {
             returnvalue = bufferedReader.readLine();
-            System.out.println(returnvalue);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,12 +72,9 @@ public class VaegtSocket {
 
         String input2 =null ;
         String input1 = bufferedReader.readLine();
-        System.out.println("1st response from weight : "+input1);
-        System.out.println(input2);
         while(input1 != null){
             if(input1.contains("RM20 B")){
                 input2 = bufferedReader.readLine();
-                System.out.println("2nd response from weight :" +input2);
                 break;
             }
             else input1 = bufferedReader.readLine();
@@ -94,7 +90,6 @@ public class VaegtSocket {
 
         String input2 =null ;
         String input1 = bufferedReader.readLine();
-        System.out.println("1st response from weight : "+input1);
         while(input1 != null){
             if(input1.contains("RM20 B")){
                 input2 = bufferedReader.readLine();
