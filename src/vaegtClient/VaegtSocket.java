@@ -88,7 +88,7 @@ public class VaegtSocket {
 
     public String readWeight() {
         output.println("S");
-        String returnvalue = null;
+      String returnvalue = null;
         try {
             returnvalue = bufferedReader.readLine();
         } catch (IOException e) {

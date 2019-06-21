@@ -117,7 +117,8 @@ public class VaegtController {
          *Weight writes name of recipe and it is approved
          */
         recept = vaegtLogic.getRecept(productBatch.getReceptId());
-        input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() + "? (1:Y,2:N)", "K", "");
+        input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() + "? " +
+                "(1:Y,2:N)", "K", "");
 
         if (!SubStringGenerator(input, "\"", "\"", 1).equals("1"))
             receptApproval();
@@ -162,10 +163,8 @@ public class VaegtController {
             raavareAfvejning(receptKompDTO);
         }
 
-        socket.sendAndAwaitReturn("Lav afvejning.", "", "");
-
         socket.sendRaavareNavn(raavareLogic.getRaavare(receptKompDTO.getRaavareId()).getRaavareNavn()+":");
-
+        socket.sendAndAwaitReturn("Lav afvejning.", "", "");
 
         netWeight = getNetWeight(socket.readWeight());
 
