@@ -1,0 +1,29 @@
+<h1>Råvareoversigt</h1>
+<div ng-controller="ListCBController">
+    <div>
+        <div class="row">
+            <div class="col-sm">
+                <b>raavarebatch ID</b>
+            </div>
+            <div class="col-sm">
+                <b>raavare ID</b>
+            </div>
+            <div class="col-sm">
+                <b>Mængde</b>
+            </div>
+        </div>
+    </div>
+    <div class="container" ng-repeat="recept in recepts">
+        <div class="row">
+            <div class="col-sm">
+                {{recept.rbId}}
+            </div>
+            <div class="col-sm">
+                {{recept.raavareId}}
+            </div>
+            <div class="col-sm">
+                {{recept.maengde}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<h1>Opret råvarebatch</h1>
+
+<div class="col-md-8 order-md-1" ng-controller="CreateCBController">
+    <form class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="rbId">Raavarebatch ID</label>
+                <input type="number" class="form-control" id="rbId" ng-model="newCB.rbId" value="" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="raavareId">raavare ID</label>
+                <input type="number" class="form-control" id="raavareId" ng-model="newCB.raavareId" value="" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="maengde">Mængde</label>
+                <div class="input-group">
+                    <input type="number" step="any" class="form-control" id="maengde" ng-model="newCB.maengde" required>
+                </div>
+            </div>
+        </div>
+        <button id="submit" class="btn btn-primary btn-lg btn-block" ng-click="submitCB()" type="submit">Opret</button>
+    </form>
+    {{error}}
+</div>

@@ -1,0 +1,53 @@
+<h1>Råvareoversigt</h1>
+<div ng-controller="ShowReceptController">
+    <div>
+        <div class="row">
+            <div class="col-sm">
+                <b>recept ID</b>
+            </div>
+            <div class="col-sm">
+                <b>recept navn</b>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                {{recept.receptId}}
+            </div>
+            <div class="col-sm">
+               {{recept.receptNavn}}
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-sm">
+                <b>Råvare ID</b>
+            </div>
+            <div class="col-sm">
+                <b>Råvare Navn</b>
+            </div>
+            <div class="col-sm">
+                <b>Nominel nettomængde</b>
+            </div>
+            <div class="col-sm">
+                <b>Tolerance</b>
+            </div>
+        </div>
+    </div>
+    <div class="container" ng-repeat="frk in result">
+        <div class="row">
+            <div class="col-sm">
+                {{frk.raavareId}}
+            </div>
+            <div class="col-sm">
+                {{frk.raavareNavn}}
+            </div>
+            <div class="col-sm">
+                {{frk.nomNetto}} kg
+            </div>
+            <div class="col-sm">
+                {{frk.tolerance}} %
+            </div>
+        </div>
+    </div>
+</div>

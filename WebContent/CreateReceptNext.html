@@ -1,0 +1,23 @@
+<h1>Opret recept trin 2/2</h1>
+
+<div class="col-md-8 order-md-1" ng-controller="CreateReceptNextController">
+    <form class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="raavareId">Raavare ID</label>
+                <input type="number" class="form-control" id="raavareId" ng-model="newReceptNext.raavareId" value="" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="nomNetto">Nominal Nettovægt</label>
+                <input type="number" step="any" class="form-control" id="nomNetto" ng-model="newReceptNext.nomNetto" value="" required>
+            </div>
+            <div clas="col-md-6 mb-3">
+                <label for="tolerance">Tolerance</label>
+                <input type="number" step="any" class="form-control" id="tolerance" ng-model="newReceptNext.tolerance" value="" required>
+            </div>
+        </div>
+        <button id="submit" class="btn btn-primary btn-lg btn-block" ng-click="nextRecept()" type="submit">Næste Råvare</button>
+        <button id="submitfinal" class="btn btn-primary btn-lg btn-block" ng-click="doneRecept()" type="submit">Færdig</button>
+    </form>
+    {{error}}
+</div>

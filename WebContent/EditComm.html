@@ -1,0 +1,29 @@
+<h1>Rediger råvare</h1>
+<div class="col-md-8 order-md-1" ng-controller="EditCommController">
+    <form class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="oldId">ID</label>
+                <div id="oldId">
+                    <h3>{{editedComm.raavareId}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="raavareNavn">Råvare Navn</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="raavareNavn" ng-model="editedComm.raavareNavn" required>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="leverandoer">Leverandør Navn</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="leverandoer" ng-model="editedComm.leverandoer" required>
+                </div>
+            </div>
+        </div>
+        <button id="submit" class="btn btn-primary btn-lg btn-block" ng-click="submitEdit()" type="submit">Gem</button>
+    </form>
+    {{error}}
+</div>

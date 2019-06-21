@@ -1,0 +1,40 @@
+<h1>Brugeroversigt</h1>
+<div ng-controller="ListUserController">
+    <div>
+        <div class="row">
+            <div class="col-sm">
+                <b>Bruger-ID</b>
+            </div>
+            <div class="col-sm">
+                <b>Brugernavn</b>
+            </div>
+            <div class="col-sm">
+                <b>Initialer</b>
+            </div>
+            <div class="col-sm">
+                <b>Status</b>
+            </div>
+            <div class="col-sm">
+            </div>
+        </div>
+    </div>
+    <div class="container" ng-repeat="user in users">
+        <div class="row">
+            <div class="col-sm">
+                {{user.oprId}}
+            </div>
+            <div class="col-sm">
+                {{user.oprNavn}}
+            </div>
+            <div class="col-sm">
+                {{user.ini}}
+            </div>
+            <div class="col-sm">
+                {{user.status}}
+            </div>
+            <div class="col-sm">
+                <a ng-href="#!/EditUser/{{user.oprId}}">Rediger</a>
+            </div>
+        </div>
+    </div>
+</div>

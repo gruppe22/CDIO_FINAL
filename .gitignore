@@ -23,5 +23,11 @@
 hs_err_pid*
 
 #IntelliJ Idea folder.
-
 /.idea
+
+# output
+/out
+/target
+
+# OS
+.DS_Store
