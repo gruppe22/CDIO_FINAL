@@ -35,21 +35,8 @@ public class VaegtSocket {
         socket.close();
     }
 
-    /*public void sendMessageBig(String msg) {
-        output.println("D \""+msg +"\" crlf");
-    }
-
-    public void sendMessageSmall(String msg) {
-        output.println("P111 \""+msg +"\" crlf");
-    }*/
-
     public String sendRaavareNavn (String msg) throws Exception{
         output.println("P111 \"" + msg + "\"");
-
-        String input2 =null ;
-        String input1 = bufferedReader.readLine();
-        System.out.println("1st response from weight : "+input1);
-        System.out.println(input2);
         return null;
     }
 
@@ -69,7 +56,6 @@ public class VaegtSocket {
                 +msg+ "\" " + "\""
                 +msg2+ "\" " + "\""
                 +msg3 + "\" ");
-
         String input2 =null ;
         String input1 = bufferedReader.readLine();
         while(input1 != null){
@@ -110,4 +96,5 @@ public class VaegtSocket {
         }
         return returnvalue;
     }
+
 }

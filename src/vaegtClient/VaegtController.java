@@ -37,11 +37,6 @@ public class VaegtController {
         return netWeight;
     }
 
-    /*  public double getBruttoWeight(double net, String bruttoWeightResult) {
-        double bruttoWeight = net + Double.parseDouble(SubStringGenerator(bruttoWeightResult, "S", " ", 9));
-        return bruttoWeight;
-    }*/
-
     private String SubStringGenerator(String source, String s, String e, int offset) {
         int opening = source.indexOf(s) + offset;
         int closing = source.indexOf(e, opening + 1);
@@ -70,7 +65,7 @@ public class VaegtController {
         /*
          * Get operator from weight
          */
-        String input = socket.sendAndAwaitIntegerReturn("Indtast opr.id:", "", "");
+        String input = socket.sendAndAwaitIntegerReturn("Indtast bruger id:", "", "");
 
         BrugerDTO user = null;
         String operatorNumber = null;
@@ -78,7 +73,7 @@ public class VaegtController {
         this.opId = Integer.parseInt(operatorNumber);
 
         try {
-            user = userLogic.getBruger(Integer.parseInt(operatorNumber));
+            user = userLogic.getBruger(this.opId);
         } catch (Exception e) {
             String i = socket.sendAndAwaitReturn("Bruger findes ikke", "", "");
             start();
@@ -122,9 +117,9 @@ public class VaegtController {
          *Weight writes name of recipe and it is approved
          */
         recept = vaegtLogic.getRecept(productBatch.getReceptId());
-        input = socket.sendAndAwaitReturn(recept.getReceptNavn() + " (Y/N)", "Korrekt receptnavn?", "");
+        input = socket.sendAndAwaitIntegerReturn(recept.getReceptNavn() + "? (1:Y,2:N)", "K", "");
 
-        if (!SubStringGenerator(input, "\"", "\"", 1).equals("Y"))
+        if (!SubStringGenerator(input, "\"", "\"", 1).equals("1"))
             receptApproval();
 
         productBatch.setStatus(1);
@@ -149,7 +144,7 @@ public class VaegtController {
 
         socket.tareWeight();
 
-        input = socket.sendAndAwaitReturn(raavareLogic.getRaavare(receptKompDTO.getRaavareId()).getRaavareNavn()+" " , "Indtast batchId", "");
+        input = socket.sendAndAwaitIntegerReturn(raavareLogic.getRaavare(receptKompDTO.getRaavareId()).getRaavareNavn()+" "+"Indtast batchId" , "", "");
         int rbId = Integer.parseInt(SubStringGenerator(input, "\"", "\"", 1));
         batchKompDTO.setRbId(rbId);
         batchKompDTO.setPbId(this.pbId);
@@ -163,23 +158,27 @@ public class VaegtController {
         }
 
         if (batch.getRaavareId() != receptKompDTO.getRaavareId()) {
-            input = socket.sendAndAwaitReturn("Forkert RavareBatch", "", "");
+            socket.sendAndAwaitReturn("Forkert RavareBatch", "", "");
             raavareAfvejning(receptKompDTO);
         }
 
         socket.sendAndAwaitReturn("Lav afvejning.", "", "");
 
+        socket.sendRaavareNavn(raavareLogic.getRaavare(receptKompDTO.getRaavareId()).getRaavareNavn()+":");
+
+
         netWeight = getNetWeight(socket.readWeight());
 
-        if (netWeight > ((1 + receptKompDTO.getTolerance()) * receptKompDTO.getNomNetto())) {
-            input = socket.sendAndAwaitReturn("Kasser afvejning", "", "");
+
+        if (netWeight > ((1 + receptKompDTO.getTolerance()) * receptKompDTO.getNomNetto()) || ((1 - receptKompDTO.getTolerance()) * receptKompDTO.getNomNetto()) < netWeight) {
+            socket.sendAndAwaitReturn("Kasser afvejning", "", "");
             batch.setMaengde(batch.getMaengde()-netWeight);
             raavareAfvejning(receptKompDTO);
-        }
+            }
 
-        batchKompDTO.setNetto(netWeight);
-        batch.setMaengde(batch.getMaengde()-netWeight);
+            batchKompDTO.setNetto(netWeight);
+            batch.setMaengde(batch.getMaengde()-netWeight);
 
-        return batchKompDTO;
+            return batchKompDTO;
     }
  }
